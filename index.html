@@ -18,15 +18,13 @@
       --border:#1b2440;
       --text:#e7ecff;
       --muted:#9aa4c7;
-      --red:#ff4655;        /* VLR vibe */
+      --red:#ff4655;
       --blue:#1f3b7a;
-      --blue2:#0f2a57;
       --good:#3cff88;
       --bad:#ff7a7a;
       --shadow: 0 10px 30px rgba(0,0,0,.45);
       --radius: 16px;
     }
-
     *{ box-sizing:border-box; }
     body{
       margin:0;
@@ -36,47 +34,20 @@
                   var(--bg);
       color: var(--text);
     }
-
-    .wrap{
-      max-width: 1200px;
-      margin: 28px auto;
-      padding: 0 18px 36px;
-    }
-
-    .topbar{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
-      margin-bottom: 18px;
-    }
-
-    h1{
-      margin:0;
-      font-size: 28px;
-      letter-spacing: .2px;
-    }
-    .subtitle{
-      margin-top:6px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
+    .wrap{ max-width: 1200px; margin: 28px auto; padding: 0 18px 36px; }
+    .topbar{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom: 18px; }
+    h1{ margin:0; font-size: 28px; letter-spacing: .2px; }
+    .subtitle{ margin-top:6px; color: var(--muted); font-size: 14px; }
     .badge{
       border:1px solid var(--border);
       background: linear-gradient(180deg, rgba(255,70,85,.14), rgba(31,59,122,.10));
-      padding: 10px 12px;
-      border-radius: 999px;
-      color: var(--text);
-      font-weight: 600;
-      font-size: 13px;
+      padding: 10px 12px; border-radius: 999px;
+      color: var(--text); font-weight: 700; font-size: 13px;
       box-shadow: var(--shadow);
+      white-space:nowrap;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr 1.35fr;
-      gap: 16px;
-      align-items:start;
-    }
-
+    .grid{ display:grid; grid-template-columns: 1fr 1.35fr; gap: 16px; align-items:start; }
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
       border:1px solid var(--border);
@@ -84,25 +55,11 @@
       padding: 16px;
       box-shadow: var(--shadow);
     }
+    .card h2{ margin: 0 0 10px; font-size: 18px; letter-spacing: .2px; }
 
-    .card h2{
-      margin: 0 0 10px;
-      font-size: 18px;
-      letter-spacing: .2px;
-    }
-
-    label{
-      display:block;
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 600;
-    }
-
+    label{ display:block; margin-top: 10px; color: var(--muted); font-size: 13px; font-weight: 700; }
     input, select{
-      width:100%;
-      margin-top: 6px;
-      padding: 12px 12px;
+      width:100%; margin-top: 6px; padding: 12px 12px;
       border-radius: 12px;
       border: 1px solid var(--border);
       background: rgba(11,15,26,.85);
@@ -112,20 +69,15 @@
     }
     input::placeholder{ color: rgba(154,164,199,.6); }
 
-    .row{
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; }
     .row > *{ flex:1; min-width: 160px; }
 
-    .btns{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top: 14px;
-    }
+    .btns{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
     button{
       cursor:pointer;
       border-radius: 12px;
       padding: 11px 14px;
-      font-weight: 700;
+      font-weight: 800;
       border: 1px solid var(--border);
       background: rgba(255,255,255,.03);
       color: var(--text);
@@ -140,74 +92,36 @@
       background: rgba(255,122,122,.10);
     }
 
-    .kpis{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
+    .kpis{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .kpi{
       border-radius: 14px;
       border:1px solid var(--border);
       background: rgba(11,15,26,.75);
       padding: 12px;
     }
-    .kpi .t{ color: var(--muted); font-size: 12px; font-weight: 700; }
-    .kpi .v{ font-size: 22px; font-weight: 800; margin-top: 6px; }
+    .kpi .t{ color: var(--muted); font-size: 12px; font-weight: 800; }
+    .kpi .v{ font-size: 22px; font-weight: 900; margin-top: 6px; }
     .kpi .s{ color: var(--muted); font-size: 12px; margin-top: 3px; }
 
     .divider{ height:1px; background: rgba(27,36,64,.7); margin: 14px 0; }
 
-    .weekProgress{
-      display:grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
-      margin-top: 10px;
-    }
+    .weekProgress{ display:grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 10px; }
     .dayBox{
       border:1px solid var(--border);
       border-radius: 12px;
       padding: 10px 10px;
       background: rgba(11,15,26,.6);
       text-align:center;
-      font-weight: 800;
+      font-weight: 900;
       font-size: 12px;
     }
-    .dayBox span{
-      display:block;
-      margin-top: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--muted);
-    }
-    .done{
-      border-color: rgba(60,255,136,.35);
-      background: rgba(60,255,136,.10);
-    }
-    .miss{
-      border-color: rgba(255,70,85,.25);
-      background: rgba(255,70,85,.06);
-    }
+    .dayBox span{ display:block; margin-top: 6px; font-size: 12px; font-weight: 800; color: var(--muted); }
+    .done{ border-color: rgba(60,255,136,.35); background: rgba(60,255,136,.10); }
+    .miss{ border-color: rgba(255,70,85,.25); background: rgba(255,70,85,.06); }
 
-    table{
-      width:100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 13px;
-      overflow:hidden;
-      border-radius: 14px;
-    }
-    th, td{
-      padding: 10px 10px;
-      border-bottom: 1px solid rgba(27,36,64,.7);
-      text-align:left;
-      vertical-align: top;
-    }
-    th{
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing:.2px;
-    }
+    table{ width:100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; border-radius: 14px; overflow:hidden; }
+    th, td{ padding: 10px 10px; border-bottom: 1px solid rgba(27,36,64,.7); text-align:left; vertical-align: top; }
+    th{ color: var(--muted); font-size: 12px; font-weight: 900; letter-spacing:.2px; }
 
     .pill{
       display:inline-flex;
@@ -219,21 +133,19 @@
       background: rgba(11,15,26,.7);
       color: var(--text);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
     }
     .dot{ width:8px; height:8px; border-radius: 999px; background: var(--red); }
     .dot.blue{ background: #6ea8ff; }
     .dot.good{ background: var(--good); }
     .dot.bad{ background: var(--bad); }
-
     .muted{ color: var(--muted); font-size: 13px; }
-    .rightTop{
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-    }
+    .rightTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
 
     @media (max-width: 980px){
       .grid{ grid-template-columns: 1fr; }
       .kpis{ grid-template-columns: 1fr; }
+      .badge{ display:none; }
     }
   </style>
 </head>
@@ -243,9 +155,9 @@
     <div class="topbar">
       <div>
         <h1>Valorant Routine Tracker — Dashboard</h1>
-        <div class="subtitle">Registro manual. Cálculos automáticos: semana/mes, mejor/peor día, y progreso por días.</div>
+        <div class="subtitle">5 tiempos de bots + Hard bots + 5 Deathmatch. Semana/Mes, mejor/peor día, progreso por días.</div>
       </div>
-      <div class="badge">📌 Proyecto: routine-tracker</div>
+      <div class="badge">🔻 Dark Mode · VLR Style</div>
     </div>
 
     <div class="grid">
@@ -256,16 +168,21 @@
         <label>Fecha</label>
         <input id="date" type="date" />
 
+        <label>100 Bots — 5 tiempos (seg)</label>
         <div class="row">
-          <div>
-            <label>Tiempo para matar 100 bots (seg)</label>
-            <input id="botTime" type="number" min="0" step="0.1" placeholder="Ej: 62.5" />
-            <div class="muted" style="margin-top:6px;">(Promedio de tus repeticiones, o el mejor tiempo si prefieres)</div>
-          </div>
+          <div><input id="botT1" type="number" min="0" step="0.1" placeholder="T1 (ej: 62.5)" /></div>
+          <div><input id="botT2" type="number" min="0" step="0.1" placeholder="T2 (ej: 61.8)" /></div>
+          <div><input id="botT3" type="number" min="0" step="0.1" placeholder="T3 (ej: 63.1)" /></div>
+          <div><input id="botT4" type="number" min="0" step="0.1" placeholder="T4 (ej: 60.9)" /></div>
+          <div><input id="botT5" type="number" min="0" step="0.1" placeholder="T5 (ej: 62.0)" /></div>
+        </div>
+        <div class="muted" style="margin-top:6px;">Se calcula el promedio (avg) y el mejor tiempo (best = más bajo).</div>
+
+        <div class="row">
           <div>
             <label>Bots en Hard (15 repeticiones)</label>
             <input id="hardBots" type="number" min="0" step="1" placeholder="Ej: 430" />
-            <div class="muted" style="margin-top:6px;">(Total de bots destruidos en 15 reps)</div>
+            <div class="muted" style="margin-top:6px;">Total de bots destruidos en 15 reps.</div>
           </div>
         </div>
 
@@ -293,7 +210,7 @@
         </div>
 
         <div class="muted" style="margin-top:12px;">
-          Tip: tu “score del día” se calcula así: <b>HardBots + (K/D × 10) − (TiempoBots/10)</b>. Eso decide mejor/peor día.
+          Tip: “score del día” = <b>HardBots + (K/D × 10) − (AvgBots/10)</b>. Eso decide mejor/peor día.
         </div>
       </div>
 
@@ -322,30 +239,30 @@
 
           <div class="kpis">
             <div class="kpi">
-              <div class="t">Tiempo bots (promedio)</div>
-              <div class="v" id="kpiBotTime">—</div>
+              <div class="t">Bots (avg)</div>
+              <div class="v" id="kpiBotAvg">—</div>
               <div class="s">Segundos (menor = mejor)</div>
+            </div>
+            <div class="kpi">
+              <div class="t">Bots (best)</div>
+              <div class="v" id="kpiBotBest">—</div>
+              <div class="s">Mejor tiempo histórico/período</div>
             </div>
             <div class="kpi">
               <div class="t">Hard bots (promedio)</div>
               <div class="v" id="kpiHardBots">—</div>
               <div class="s">Total/15 reps (mayor = mejor)</div>
             </div>
+
             <div class="kpi">
               <div class="t">K/D Deathmatch (promedio)</div>
               <div class="v" id="kpiKD">—</div>
-              <div class="s">De tus 5 DMs (mayor = mejor)</div>
+              <div class="s">Mayor = mejor</div>
             </div>
-
             <div class="kpi">
               <div class="t">Kills DM (promedio)</div>
               <div class="v" id="kpiKills">—</div>
-              <div class="s">Kills totales del día</div>
-            </div>
-            <div class="kpi">
-              <div class="t">Deaths DM (promedio)</div>
-              <div class="v" id="kpiDeaths">—</div>
-              <div class="s">Deaths totales del día</div>
+              <div class="s">Kills del día</div>
             </div>
             <div class="kpi">
               <div class="t">Registros</div>
@@ -378,7 +295,7 @@
               <tr>
                 <th>Fecha</th>
                 <th>Día</th>
-                <th>Tiempo 100 bots</th>
+                <th>Bots avg/best</th>
                 <th>Hard bots (15)</th>
                 <th>DM K</th>
                 <th>DM D</th>
@@ -396,7 +313,7 @@
   </div>
 
 <script>
-  const KEY = "valorant_routine_tracker_v3";
+  const KEY = "valorant_routine_tracker_v4";
 
   const el = (id) => document.getElementById(id);
 
@@ -421,13 +338,9 @@
     return k / d;
   }
 
-  // Score compuesto para decidir mejor/peor día
-  // (HardBots alto + KD alto + BotTime bajo)
-  function perfScore(item){
-    const botTime = item.botTime || 0;        // menor = mejor
-    const hardBots = item.hardBots || 0;      // mayor = mejor
-    const kdr = kd(item.dmKills||0, item.dmDeaths||0);
-    return (hardBots) + (kdr * 10) - (botTime / 10);
+  function mean(arr){
+    if (!arr.length) return 0;
+    return arr.reduce((a,b)=>a+b,0) / arr.length;
   }
 
   function fmt(n, d=2){
@@ -435,21 +348,40 @@
     return (Math.round(n*p)/p).toFixed(d);
   }
 
-  function mean(arr){
-    if (!arr.length) return 0;
-    return arr.reduce((a,b)=>a+b,0) / arr.length;
+  function dowName(dateStr){
+    const d = new Date(dateStr + "T00:00:00");
+    return DOW_SHORT[d.getDay()];
   }
 
-  // ISO week (lunes inicio)
+  function avgBotTime(item){
+    const arr = Array.isArray(item.botTimes) ? item.botTimes : [];
+    const vals = arr.map(n => Number(n)).filter(n => Number.isFinite(n) && n > 0);
+    if (!vals.length) return 0;
+    return mean(vals);
+  }
+  function bestBotTime(item){
+    const arr = Array.isArray(item.botTimes) ? item.botTimes : [];
+    const vals = arr.map(n => Number(n)).filter(n => Number.isFinite(n) && n > 0);
+    if (!vals.length) return 0;
+    return Math.min(...vals);
+  }
+
+  // Score compuesto: hardBots alto + KD alto + botsAvg bajo
+  function perfScore(item){
+    const botAvg = avgBotTime(item);
+    const hardBots = item.hardBots || 0;
+    const kdr = kd(item.dmKills||0, item.dmDeaths||0);
+    return (hardBots) + (kdr * 10) - (botAvg / 10);
+  }
+
+  // ISO week key (lunes inicio)
   function isoWeekKey(dateStr){
     const d = new Date(dateStr + "T00:00:00");
-    // Convertir a jueves de la misma semana
     const day = (d.getDay() + 6) % 7; // Mon=0..Sun=6
     d.setDate(d.getDate() - day + 3);
     const firstThursday = new Date(d.getFullYear(), 0, 4);
     const firstDay = (firstThursday.getDay() + 6) % 7;
     firstThursday.setDate(firstThursday.getDate() - firstDay + 3);
-
     const weekNumber = 1 + Math.round((d - firstThursday) / (7 * 24 * 3600 * 1000));
     const year = d.getFullYear();
     return `${year}-W${String(weekNumber).padStart(2,'0')}`;
@@ -462,42 +394,17 @@
     return `${y}-${m}`;
   }
 
-  function dowName(dateStr){
-    const d = new Date(dateStr + "T00:00:00");
-    return DOW_SHORT[d.getDay()];
-  }
-
   function periodKeyByMode(mode, dateStr){
     if (mode === "week") return isoWeekKey(dateStr);
     if (mode === "month") return monthKey(dateStr);
     return "all";
   }
 
-  function getItemsFor(mode, key){
-    const items = load();
-    if (mode === "all") return items;
-    return items.filter(x => periodKeyByMode(mode, x.date) === key);
-  }
-
   function uniquePeriods(mode){
     const items = load().filter(x => x.date);
     if (mode === "all") return ["all"];
     const set = new Set(items.map(x => periodKeyByMode(mode, x.date)));
-    // ordenar desc
     return Array.from(set).sort((a,b)=> b.localeCompare(a));
-  }
-
-  function bestWorst(items){
-    if (!items.length) return { best:null, worst:null, avgScore:0 };
-    let best = items[0], worst = items[0];
-    let scores = [];
-    for (const it of items){
-      const s = perfScore(it);
-      scores.push(s);
-      if (s > perfScore(best)) best = it;
-      if (s < perfScore(worst)) worst = it;
-    }
-    return { best, worst, avgScore: mean(scores) };
   }
 
   function renderPeriodSelect(){
@@ -511,16 +418,26 @@
       opt.textContent = (mode === "all") ? "Todo" : p;
       ps.appendChild(opt);
     }
-
-    // Seleccionar el período más reciente que exista
     ps.value = periods[0] ?? (mode === "all" ? "all" : "");
   }
 
-  function renderWeekProgress(items, mode){
+  function bestWorst(items){
+    if (!items.length) return { best:null, worst:null, avgScore:0 };
+    let best = items[0], worst = items[0];
+    const scores = [];
+    for (const it of items){
+      const s = perfScore(it);
+      scores.push(s);
+      if (s > perfScore(best)) best = it;
+      if (s < perfScore(worst)) worst = it;
+    }
+    return { best, worst, avgScore: mean(scores) };
+  }
+
+  function renderWeekProgress(items){
     const box = el("weekProgress");
     box.innerHTML = "";
 
-    // Construimos set de días presentes en el período (Lun..Dom)
     const has = new Set();
     for (const it of items){
       const d = new Date(it.date + "T00:00:00");
@@ -539,6 +456,7 @@
   function render(){
     const mode = el("viewMode").value;
     const period = el("periodSelect").value || (mode === "all" ? "all" : "");
+
     const allItems = load().slice().sort((a,b)=> (a.date||"").localeCompare(b.date||""));
     const items = (mode === "all") ? allItems : allItems.filter(x => periodKeyByMode(mode, x.date) === period);
 
@@ -547,42 +465,43 @@
 
     const last = allItems.length ? allItems[allItems.length-1].date : "—";
     el("kpiLast").textContent = `Último: ${last}`;
-    el("kpiCount").textContent = String(items.length);
-    el("kpiLast").textContent = `Último: ${last}`;
 
-    // KPIs (promedios)
-    const botTimes = items.map(x => x.botTime || 0).filter(x => x > 0);
+    // KPIs
+    const botAvgs = items.map(x => avgBotTime(x)).filter(x => x > 0);
+    const botBests = items.map(x => bestBotTime(x)).filter(x => x > 0);
+
     const hardBots = items.map(x => x.hardBots || 0);
     const dmKills = items.map(x => x.dmKills || 0);
     const dmDeaths = items.map(x => x.dmDeaths || 0);
     const kds = items.map(x => kd(x.dmKills||0, x.dmDeaths||0));
 
-    el("kpiBotTime").textContent = botTimes.length ? `${fmt(mean(botTimes),1)}s` : "—";
+    el("kpiBotAvg").textContent = botAvgs.length ? `${fmt(mean(botAvgs),1)}s` : "—";
+    el("kpiBotBest").textContent = botBests.length ? `${fmt(Math.min(...botBests),1)}s` : "—";
     el("kpiHardBots").textContent = items.length ? fmt(mean(hardBots),0) : "—";
     el("kpiKD").textContent = items.length ? fmt(mean(kds),2) : "—";
     el("kpiKills").textContent = items.length ? fmt(mean(dmKills),0) : "—";
-    el("kpiDeaths").textContent = items.length ? fmt(mean(dmDeaths),0) : "—";
-    el("kpiCount").textContent = String(items.length);
 
     const bw = bestWorst(items);
     el("bestDay").textContent = bw.best ? `${bw.best.date} (${dowName(bw.best.date)})` : "—";
     el("worstDay").textContent = bw.worst ? `${bw.worst.date} (${dowName(bw.worst.date)})` : "—";
     el("avgScore").textContent = items.length ? fmt(bw.avgScore,1) : "—";
 
-    renderWeekProgress(items, mode);
+    renderWeekProgress(items);
 
     // tabla
     const tbody = el("tbody");
     tbody.innerHTML = "";
     for (const x of items.slice().sort((a,b)=> (b.date||"").localeCompare(a.date||""))){
-      const tr = document.createElement("tr");
       const kdr = kd(x.dmKills||0, x.dmDeaths||0);
       const score = perfScore(x);
+      const avgT = avgBotTime(x);
+      const bestT = bestBotTime(x);
 
+      const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${x.date || ""}</td>
         <td>${x.date ? dowName(x.date) : ""}</td>
-        <td>${x.botTime ? fmt(x.botTime,1) + "s" : "—"}</td>
+        <td>${avgT ? (fmt(avgT,1) + "s / " + fmt(bestT,1) + "s") : "—"}</td>
         <td>${fmt(x.hardBots||0,0)}</td>
         <td>${fmt(x.dmKills||0,0)}</td>
         <td>${fmt(x.dmDeaths||0,0)}</td>
@@ -591,38 +510,44 @@
         <td>${(x.notes||"").replaceAll("<","&lt;").replaceAll(">","&gt;")}</td>
         <td><button data-id="${x.id}">Eliminar</button></td>
       `;
-
       tr.querySelector("button").addEventListener("click", () => {
         const updated = load().filter(i => i.id !== x.id);
         save(updated);
-        // refrescar períodos y render
         renderPeriodSelect();
         render();
       });
-
       tbody.appendChild(tr);
     }
   }
 
   function addItem(){
     const date = el("date").value || new Date().toISOString().slice(0,10);
-    const botTime = Math.max(0, safeNum(el("botTime").value));
+
+    const botTimes = [
+      Math.max(0, safeNum(el("botT1").value)),
+      Math.max(0, safeNum(el("botT2").value)),
+      Math.max(0, safeNum(el("botT3").value)),
+      Math.max(0, safeNum(el("botT4").value)),
+      Math.max(0, safeNum(el("botT5").value)),
+    ];
+
     const hardBots = Math.max(0, Math.floor(safeNum(el("hardBots").value)));
     const dmKills = Math.max(0, Math.floor(safeNum(el("dmKills").value)));
     const dmDeaths = Math.max(0, Math.floor(safeNum(el("dmDeaths").value)));
     const notes = (el("notes").value || "").trim();
 
-    const item = {
-      id: crypto.randomUUID(),
-      date, botTime, hardBots, dmKills, dmDeaths, notes
-    };
+    const item = { id: crypto.randomUUID(), date, botTimes, hardBots, dmKills, dmDeaths, notes };
 
     const items = load();
     items.push(item);
     save(items);
 
     // limpiar inputs (conservar fecha)
-    el("botTime").value = "";
+    el("botT1").value = "";
+    el("botT2").value = "";
+    el("botT3").value = "";
+    el("botT4").value = "";
+    el("botT5").value = "";
     el("hardBots").value = "";
     el("dmKills").value = "";
     el("dmDeaths").value = "";
@@ -642,14 +567,21 @@
 
   function exportCSV(){
     const items = load();
-    const header = ["date","dow","botTimeSeconds","hardBots15reps","dmKillsTotal5","dmDeathsTotal5","dmKD","score","notes"];
+    const header = ["date","dow","botT1","botT2","botT3","botT4","botT5","botAvg","botBest","hardBots15reps","dmKillsTotal5","dmDeathsTotal5","dmKD","score","notes"];
+
     const rows = items.map(x => {
+      const bt = Array.isArray(x.botTimes) ? x.botTimes : [0,0,0,0,0];
       const kdr = kd(x.dmKills||0, x.dmDeaths||0);
       const s = perfScore(x);
+      const botAvg = avgBotTime(x);
+      const botBest = bestBotTime(x);
+
       return [
         x.date,
         x.date ? dowName(x.date) : "",
-        x.botTime || 0,
+        bt[0]||0, bt[1]||0, bt[2]||0, bt[3]||0, bt[4]||0,
+        botAvg.toFixed(2),
+        botBest.toFixed(2),
         x.hardBots || 0,
         x.dmKills || 0,
         x.dmDeaths || 0,
@@ -681,13 +613,10 @@
     renderPeriodSelect();
     render();
   });
-
   el("periodSelect").addEventListener("change", () => render());
 
-  // fecha default
-  el("date").value = new Date().toISOString().slice(0,10);
-
   // init
+  el("date").value = new Date().toISOString().slice(0,10);
   renderPeriodSelect();
   render();
 </script>
