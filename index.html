@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Valorant Routine Tracker (rutina de nats)</title>
 
-  <!-- Tipografía semi-pro -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,6 +19,7 @@
       --red:#ff4655;
       --good:#3cff88;
       --bad:#ff7a7a;
+      --blue:#6ea8ff;
       --shadow: 0 10px 30px rgba(0,0,0,.45);
       --radius: 16px;
     }
@@ -33,7 +33,7 @@
       color: var(--text);
     }
     .wrap{ max-width: 1200px; margin: 28px auto; padding: 0 18px 36px; }
-    .topbar{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom: 18px; }
+    .topbar{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom: 12px; }
     h1{ margin:0; font-size: 28px; letter-spacing: .2px; }
     .subtitle{ margin-top:6px; color: var(--muted); font-size: 14px; }
 
@@ -46,6 +46,18 @@
       white-space:nowrap;
     }
 
+    .toast{
+      display:none;
+      margin: 0 0 14px;
+      border: 1px solid rgba(60,255,136,.28);
+      background: rgba(60,255,136,.08);
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      font-weight: 900;
+    }
+    .toast b{ color: var(--good); }
+
     .grid{ display:grid; grid-template-columns: 1fr 1.35fr; gap: 16px; align-items:start; }
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
@@ -57,7 +69,6 @@
     .card h2{ margin: 0 0 10px; font-size: 18px; letter-spacing: .2px; }
 
     label{ display:block; margin-top: 10px; color: var(--muted); font-size: 13px; font-weight: 800; }
-
     input, select{
       width:100%; margin-top: 6px; padding: 12px 12px;
       border-radius: 12px;
@@ -72,16 +83,11 @@
     .row{ display:flex; gap:10px; flex-wrap:wrap; }
     .row > *{ flex:1; min-width: 150px; }
 
-    .gridInputs{
-      display:grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-    }
+    .gridInputs{ display:grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
     .gridInputs.three{ grid-template-columns: repeat(3, 1fr); }
     .gridInputs.five{ grid-template-columns: repeat(5, 1fr); }
 
     .muted{ color: var(--muted); font-size: 13px; margin-top: 6px; }
-
     .divider{ height:1px; background: rgba(27,36,64,.7); margin: 14px 0; }
 
     .btns{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
@@ -116,9 +122,7 @@
     .kpi .s{ color: var(--muted); font-size: 12px; margin-top: 3px; }
 
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+      display:inline-flex; align-items:center; gap:8px;
       padding: 6px 10px;
       border-radius: 999px;
       border:1px solid var(--border);
@@ -130,7 +134,7 @@
     .dot{ width:8px; height:8px; border-radius: 999px; background: var(--red); }
     .dot.good{ background: var(--good); }
     .dot.bad{ background: var(--bad); }
-    .dot.blue{ background: #6ea8ff; }
+    .dot.blue{ background: var(--blue); }
 
     .weekProgress{ display:grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 10px; }
     .dayBox{
@@ -150,12 +154,71 @@
     th, td{ padding: 10px 10px; border-bottom: 1px solid rgba(27,36,64,.7); text-align:left; vertical-align: top; }
     th{ color: var(--muted); font-size: 12px; font-weight: 900; letter-spacing:.2px; }
 
+    .tagPB{
+      display:inline-flex; align-items:center; gap:6px;
+      border: 1px solid rgba(60,255,136,.28);
+      background: rgba(60,255,136,.08);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-weight: 900;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    .insightsGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .miniCard{
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(11,15,26,.75);
+      padding: 12px;
+      min-height: 92px;
+    }
+    .miniTitle{ color: var(--muted); font-weight: 900; font-size: 12px; }
+    .miniValue{ margin-top: 6px; font-size: 16px; font-weight: 900; }
+    .miniHint{ margin-top: 6px; color: var(--muted); font-size: 12px; }
+
+    .deltaUp{ color: var(--good); }
+    .deltaDown{ color: var(--bad); }
+    .deltaFlat{ color: var(--muted); }
+
+    .streakWrap{
+      margin-top: 10px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(11,15,26,.75);
+      padding: 12px;
+    }
+    .bar{
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(27,36,64,.7);
+      overflow:hidden;
+      margin-top: 10px;
+    }
+    .bar > div{
+      height:100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(255,70,85,.55), rgba(60,255,136,.55));
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+
+    canvas{ width:100%; height: 160px; display:block; }
+
     @media (max-width: 980px){
       .grid{ grid-template-columns: 1fr; }
       .kpis{ grid-template-columns: 1fr; }
       .gridInputs{ grid-template-columns: repeat(2, 1fr); }
       .gridInputs.three{ grid-template-columns: repeat(2, 1fr); }
       .gridInputs.five{ grid-template-columns: repeat(2, 1fr); }
+      .insightsGrid{ grid-template-columns: 1fr; }
       .badge{ display:none; }
     }
   </style>
@@ -166,10 +229,12 @@
     <div class="topbar">
       <div>
         <h1>Valorant Routine Tracker <span style="color:var(--muted); font-weight:800;">(rutina de nats)</span></h1>
-        <div class="subtitle">100 bots (5 tiempos) · Hard (15 reps) · Deathmatch (5 DMs). Semana/Mes + mejor/peor día.</div>
+        <div class="subtitle">100 bots (5 tiempos) · Hard (15 reps) · Deathmatch (5 DMs). Semana/Mes + PB + racha + gráfica.</div>
       </div>
       <div class="badge">🔻 Dark Mode · VLR Style</div>
     </div>
+
+    <div class="toast" id="toastPB">🏆 <b>NEW PB</b> — </div>
 
     <div class="grid">
       <!-- FORM -->
@@ -253,7 +318,7 @@
           <div class="row" style="align-items:flex-end;">
             <div style="flex:1; min-width:240px;">
               <h2 style="margin:0;">Resumen</h2>
-              <div class="muted" style="margin-top:6px;">Promedios por período y highlights.</div>
+              <div class="muted" style="margin-top:6px;">Promedios por período + señales de progreso.</div>
             </div>
             <div style="flex:1; min-width:220px;">
               <label style="margin-top:0;">Vista</label>
@@ -311,6 +376,31 @@
             <span class="pill"><span class="dot good"></span> Mejor día: <b id="bestDay">—</b></span>
             <span class="pill"><span class="dot bad"></span> Peor día: <b id="worstDay">—</b></span>
             <span class="pill"><span class="dot blue"></span> Promedio score: <b id="avgScore">—</b></span>
+          </div>
+
+          <div class="divider"></div>
+
+          <h2 style="margin:0 0 8px;">Insights</h2>
+
+          <div class="insightsGrid">
+            <div class="miniCard">
+              <div class="miniTitle">🎯 Vs semana pasada (100 bots avg)</div>
+              <div class="miniValue" id="vsLastWeek">—</div>
+              <div class="miniHint">Menor = mejor. Compara promedios semanales.</div>
+            </div>
+
+            <div class="miniCard">
+              <div class="miniTitle">📈 Bots avg por semana</div>
+              <canvas id="weekChart" width="600" height="220"></canvas>
+              <div class="miniHint">Últimas semanas con datos (promedio de bots avg).</div>
+            </div>
+          </div>
+
+          <div class="streakWrap">
+            <div class="miniTitle">🔥 Consistencia (racha)</div>
+            <div class="miniValue" id="streakText">—</div>
+            <div class="miniHint" id="streakHint">Meta: 5+ días seguidos.</div>
+            <div class="bar"><div id="streakBar"></div></div>
           </div>
 
           <div class="divider"></div>
@@ -380,7 +470,7 @@
     return DOW_SHORT[d.getDay()];
   }
 
-  // ---- 100 bots (5 tiempos)
+  // --- Bots 100 (5 tiempos)
   function botTimesVals(item){
     const arr = Array.isArray(item.botTimes) ? item.botTimes : [];
     return arr.map(n=>Number(n)).filter(n => Number.isFinite(n) && n > 0);
@@ -394,7 +484,7 @@
     return vals.length ? Math.min(...vals) : 0;
   }
 
-  // ---- Hard (15 reps)
+  // --- Hard 15 reps
   function hardVals(item){
     const arr = Array.isArray(item.hardReps) ? item.hardReps : [];
     return arr.map(n=>Number(n)).filter(n => Number.isFinite(n) && n >= 0);
@@ -413,10 +503,9 @@
     return vals.length ? Math.max(...vals) : 0;
   }
 
-  // ---- Deathmatch (5 DMs)
+  // --- Deathmatch 5
   function dmPairs(item){
     const arr = Array.isArray(item.dms) ? item.dms : [];
-    // cada entry: {k,d}
     return arr.map(x => ({ k: Number(x?.k)||0, d: Number(x?.d)||0 }));
   }
   function dmTotals(item){
@@ -429,29 +518,13 @@
     const t = dmTotals(item);
     return kd(t.k, t.d);
   }
-  function dmAvgKills(item){
-    const pairs = dmPairs(item);
-    if (!pairs.length) return 0;
-    return mean(pairs.map(x=>x.k));
-  }
-  function dmAvgDeaths(item){
-    const pairs = dmPairs(item);
-    if (!pairs.length) return 0;
-    return mean(pairs.map(x=>x.d));
-  }
-  function dmBestKD(item){
-    const pairs = dmPairs(item);
-    if (!pairs.length) return 0;
-    const kds = pairs.map(x=>kd(x.k,x.d));
-    return Math.max(...kds);
-  }
 
-  // Score compuesto para mejor/peor día
+  // Score compuesto
   function perfScore(item){
     return (hardTotal(item)) + (dmKDTotal(item) * 10) - (botAvg(item) / 10);
   }
 
-  // ISO week key (lunes inicio)
+  // ISO week key
   function isoWeekKey(dateStr){
     const d = new Date(dateStr + "T00:00:00");
     const day = (d.getDay() + 6) % 7; // Mon=0..Sun=6
@@ -525,6 +598,178 @@
     }
   }
 
+  // ------- NEW PB: 100 bots best (menor)
+  function globalBestBotBest(items){
+    const vals = items.map(x => botBest(x)).filter(v => v > 0);
+    return vals.length ? Math.min(...vals) : 0;
+  }
+  function showPBToast(text){
+    const t = el("toastPB");
+    if (!text){
+      t.style.display = "none";
+      return;
+    }
+    t.textContent = "";
+    t.append("🏆 ");
+    const b = document.createElement("b");
+    b.textContent = "NEW PB";
+    t.appendChild(b);
+    t.append(" — " + text);
+    t.style.display = "block";
+    setTimeout(()=>{ t.style.display = "none"; }, 4500);
+  }
+
+  // ------- Consistencia: racha de días
+  function computeStreak(allItems){
+    const dates = Array.from(new Set(allItems.map(x => x.date).filter(Boolean))).sort();
+    if (!dates.length) return {streak:0, last:null};
+
+    const last = dates[dates.length - 1];
+    let streak = 1;
+
+    function toDayNum(ds){
+      const d = new Date(ds + "T00:00:00");
+      return Math.floor(d.getTime() / 86400000);
+    }
+
+    for (let i = dates.length - 1; i > 0; i--){
+      const a = toDayNum(dates[i]);
+      const b = toDayNum(dates[i-1]);
+      if (a - b === 1) streak++;
+      else break;
+    }
+    return {streak, last};
+  }
+
+  // ------- Semana: datos para gráfica + comparación
+  function weeklyBotAvgSeries(allItems){
+    // Map: weekKey -> {sum,count}
+    const map = new Map();
+    for (const it of allItems){
+      if (!it.date) continue;
+      const a = botAvg(it);
+      if (!a) continue;
+      const wk = isoWeekKey(it.date);
+      const cur = map.get(wk) || {sum:0, count:0};
+      cur.sum += a;
+      cur.count += 1;
+      map.set(wk, cur);
+    }
+    const keys = Array.from(map.keys()).sort(); // asc
+    const series = keys.map(k => ({ week:k, avg: map.get(k).sum / map.get(k).count }));
+    return series;
+  }
+
+  function drawWeekChart(series){
+    const c = el("weekChart");
+    const ctx = c.getContext("2d");
+    const W = c.width, H = c.height;
+
+    ctx.clearRect(0,0,W,H);
+
+    // background subtle
+    ctx.fillStyle = "rgba(255,255,255,0.02)";
+    ctx.fillRect(0,0,W,H);
+
+    if (!series.length){
+      ctx.fillStyle = "rgba(154,164,199,0.8)";
+      ctx.font = "bold 14px Inter, Arial";
+      ctx.fillText("Sin datos aún", 16, 32);
+      return;
+    }
+
+    const lastN = series.slice(Math.max(0, series.length - 8));
+    const ys = lastN.map(p => p.avg);
+    let minY = Math.min(...ys);
+    let maxY = Math.max(...ys);
+    if (minY === maxY){ minY -= 1; maxY += 1; }
+
+    const padL = 44, padR = 14, padT = 14, padB = 34;
+    const plotW = W - padL - padR;
+    const plotH = H - padT - padB;
+
+    const xAt = (i) => padL + (plotW * (lastN.length === 1 ? 0 : (i/(lastN.length-1))));
+    const yAt = (v) => padT + (plotH * (1 - ((v - minY)/(maxY - minY))));
+
+    // axes
+    ctx.strokeStyle = "rgba(27,36,64,0.9)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padL, padT);
+    ctx.lineTo(padL, padT + plotH);
+    ctx.lineTo(padL + plotW, padT + plotH);
+    ctx.stroke();
+
+    // y labels (min/max)
+    ctx.fillStyle = "rgba(154,164,199,0.85)";
+    ctx.font = "bold 12px Inter, Arial";
+    ctx.fillText(fmt(maxY,1), 8, padT + 12);
+    ctx.fillText(fmt(minY,1), 8, padT + plotH);
+
+    // line
+    ctx.strokeStyle = "rgba(110,168,255,0.95)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    lastN.forEach((p,i)=>{
+      const x = xAt(i), y = yAt(p.avg);
+      if (i===0) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+
+    // points
+    ctx.fillStyle = "rgba(255,70,85,0.95)";
+    lastN.forEach((p,i)=>{
+      const x = xAt(i), y = yAt(p.avg);
+      ctx.beginPath();
+      ctx.arc(x,y,3.5,0,Math.PI*2);
+      ctx.fill();
+    });
+
+    // x labels (weeks)
+    ctx.fillStyle = "rgba(154,164,199,0.75)";
+    ctx.font = "bold 11px Inter, Arial";
+    lastN.forEach((p,i)=>{
+      const label = p.week.slice(5); // "W02"
+      const x = xAt(i);
+      if (lastN.length > 5 && i % 2 === 1) return; // reduce clutter
+      ctx.fillText(label, x-12, padT + plotH + 22);
+    });
+  }
+
+  function renderVsLastWeek(allItems){
+    const series = weeklyBotAvgSeries(allItems);
+    if (series.length < 2){
+      el("vsLastWeek").textContent = "—";
+      return;
+    }
+    const cur = series[series.length-1].avg;
+    const prev = series[series.length-2].avg;
+
+    // lower is better
+    const delta = prev === 0 ? 0 : ((prev - cur) / prev) * 100;
+    const arrow = delta > 0 ? "⬇" : (delta < 0 ? "⬆" : "→"); // ⬇ mejora (baja el tiempo)
+    const cls = delta > 0 ? "deltaUp" : (delta < 0 ? "deltaDown" : "deltaFlat");
+    const sign = delta > 0 ? "+" : "";
+
+    el("vsLastWeek").innerHTML = `<span class="${cls}">${arrow} ${sign}${fmt(delta,1)}%</span> · ${fmt(cur,1)}s (prev ${fmt(prev,1)}s)`;
+  }
+
+  function renderStreak(allItems){
+    const {streak, last} = computeStreak(allItems);
+    const txt = streak ? `${streak} día(s) seguidos` : "—";
+    el("streakText").textContent = txt;
+
+    const ok = streak >= 5;
+    el("streakHint").textContent = ok
+      ? `Nice. Estás en modo disciplina (último: ${last}).`
+      : (last ? `Sigue: te faltan ${5 - streak} para llegar a 5 (último: ${last}).` : "Meta: 5+ días seguidos.");
+
+    // bar: cap at 10 days (visual)
+    const pct = Math.min(100, (streak / 10) * 100);
+    el("streakBar").style.width = pct + "%";
+  }
+
   function render(){
     const mode = el("viewMode").value;
     const period = el("periodSelect").value || (mode === "all" ? "all" : "");
@@ -538,14 +783,13 @@
     const last = allItems.length ? allItems[allItems.length-1].date : "—";
     el("kpiLast").textContent = `Último: ${last}`;
 
-    // KPIs promedio por período
+    // KPIs por período seleccionado
     const botAvgs = items.map(x => botAvg(x)).filter(x => x > 0);
     const botBests = items.map(x => botBest(x)).filter(x => x > 0);
-
     const hardTotals = items.map(x => hardTotal(x));
     const hardAvgReps = items.map(x => hardAvgRep(x));
     const dmKDs = items.map(x => dmKDTotal(x));
-    
+
     el("kpiBotAvg").textContent = botAvgs.length ? `${fmt(mean(botAvgs),1)}s` : "—";
     el("kpiBotBest").textContent = botBests.length ? `${fmt(Math.min(...botBests),1)}s` : "—";
     el("kpiHardTotal").textContent = items.length ? fmt(mean(hardTotals),0) : "—";
@@ -559,6 +803,12 @@
 
     renderWeekProgress(items);
 
+    // Insights (siempre en base a TODO, porque tiene sentido ver tendencia)
+    const series = weeklyBotAvgSeries(allItems);
+    drawWeekChart(series);
+    renderVsLastWeek(allItems);
+    renderStreak(allItems);
+
     // tabla
     const tbody = el("tbody");
     tbody.innerHTML = "";
@@ -571,11 +821,13 @@
       const dmkd = dmKDTotal(x);
       const score = perfScore(x);
 
+      const pbTag = x.pbBotBest ? `<span class="tagPB">🏆 PB</span>` : "";
+
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${x.date || ""}</td>
         <td>${x.date ? dowName(x.date) : ""}</td>
-        <td>${bAvg ? (fmt(bAvg,1) + "s / " + fmt(bBest,1) + "s") : "—"}</td>
+        <td>${bAvg ? (fmt(bAvg,1) + "s / " + fmt(bBest,1) + "s") : "—"} ${pbTag}</td>
         <td>${fmt(hTot,0)} (${fmt(hAvg,1)})</td>
         <td>${fmt(dmt.k,0)}-${fmt(dmt.d,0)} (${fmt(dmkd,2)})</td>
         <td>${fmt(score,1)}</td>
@@ -595,22 +847,16 @@
   function addItem(){
     const date = el("date").value || new Date().toISOString().slice(0,10);
 
-    // bots
-    const botTimes = [
-      Math.max(0, safeNum(el("botT1").value)),
-      Math.max(0, safeNum(el("botT2").value)),
-      Math.max(0, safeNum(el("botT3").value)),
-      Math.max(0, safeNum(el("botT4").value)),
-      Math.max(0, safeNum(el("botT5").value)),
-    ];
+    const botTimes = [];
+    for (let i=1;i<=5;i++){
+      botTimes.push(Math.max(0, safeNum(el("botT"+i).value)));
+    }
 
-    // hard 15 reps
     const hardReps = [];
     for (let i=1;i<=15;i++){
       hardReps.push(Math.max(0, Math.floor(safeNum(el("h"+i).value))));
     }
 
-    // deathmatch 5
     const dms = [];
     for (let i=1;i<=5;i++){
       const k = Math.max(0, Math.floor(safeNum(el(`dm${i}k`).value)));
@@ -620,13 +866,37 @@
 
     const notes = (el("notes").value || "").trim();
 
-    const item = { id: crypto.randomUUID(), date, botTimes, hardReps, dms, notes };
+    const itemsBefore = load();
+    const prevGlobalBest = globalBestBotBest(itemsBefore); // menor es mejor
 
-    const items = load();
+    const item = {
+      id: crypto.randomUUID(),
+      date,
+      botTimes,
+      hardReps,
+      dms,
+      notes,
+      pbBotBest: false
+    };
+
+    // PB check (solo si hay best válido)
+    const newBest = botBest(item);
+    if (newBest > 0 && (prevGlobalBest === 0 || newBest < prevGlobalBest)){
+      item.pbBotBest = true;
+    }
+
+    const items = itemsBefore;
     items.push(item);
     save(items);
 
-    // limpiar inputs (conservar fecha)
+    // toast PB
+    if (item.pbBotBest){
+      showPBToast(`100 bots best: ${fmt(newBest,1)}s (antes ${prevGlobalBest ? fmt(prevGlobalBest,1)+"s" : "—"})`);
+    } else {
+      showPBToast("");
+    }
+
+    // limpiar
     for (let i=1;i<=5;i++){ el("botT"+i).value = ""; }
     for (let i=1;i<=15;i++){ el("h"+i).value = ""; }
     for (let i=1;i<=5;i++){ el(`dm${i}k`).value = ""; el(`dm${i}d`).value = ""; }
@@ -648,11 +918,11 @@
     const items = load();
     const header = [
       "date","dow",
-      "botT1","botT2","botT3","botT4","botT5","botAvg","botBest",
+      "botT1","botT2","botT3","botT4","botT5","botAvg","botBest","pbBotBest",
       "hardR1","hardR2","hardR3","hardR4","hardR5","hardR6","hardR7","hardR8","hardR9","hardR10","hardR11","hardR12","hardR13","hardR14","hardR15",
       "hardTotal","hardAvgRep","hardBestRep",
       "dm1k","dm1d","dm2k","dm2d","dm3k","dm3d","dm4k","dm4d","dm5k","dm5d",
-      "dmKillsTotal","dmDeathsTotal","dmKDTotal","dmBestKD",
+      "dmKillsTotal","dmDeathsTotal","dmKDTotal",
       "score","notes"
     ];
 
@@ -663,14 +933,15 @@
 
       const bAvg = botAvg(x), bBest = botBest(x);
       const hTot = hardTotal(x), hAvg = hardAvgRep(x), hBest = hardBestRep(x);
-      const dmt = dmTotals(x), dmkd = dmKDTotal(x), dmBest = dmBestKD(x);
+      const dmt = dmTotals(x), dmkd = dmKDTotal(x);
       const score = perfScore(x);
 
-      const flat = [
+      return [
         x.date,
         x.date ? dowName(x.date) : "",
         bt[0]||0, bt[1]||0, bt[2]||0, bt[3]||0, bt[4]||0,
         bAvg.toFixed(2), bBest.toFixed(2),
+        x.pbBotBest ? "1" : "0",
         ...hr,
         hTot, hAvg.toFixed(2), hBest,
         (dms[0]?.k||0),(dms[0]?.d||0),
@@ -678,12 +949,10 @@
         (dms[2]?.k||0),(dms[2]?.d||0),
         (dms[3]?.k||0),(dms[3]?.d||0),
         (dms[4]?.k||0),(dms[4]?.d||0),
-        dmt.k, dmt.d, dmkd.toFixed(4), dmBest.toFixed(4),
+        dmt.k, dmt.d, dmkd.toFixed(4),
         score.toFixed(2),
         (x.notes ?? "").replaceAll('"','""')
       ];
-
-      return flat;
     });
 
     const csv = [header, ...rows]
