@@ -3,290 +3,661 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Routine Tracker (KPI Dashboard)</title>
+  <title>Valorant Routine Tracker</title>
+
+  <!-- Tipografía semi-pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: system-ui, Arial; margin: 24px; line-height: 1.35; }
-    h1 { margin-bottom: 6px; }
-    .muted { color:#666; font-size:12px; }
-    .grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 16px; max-width: 1100px; }
-    .card { border: 1px solid #ddd; border-radius: 14px; padding: 16px; background:#fff; }
-    label { display:block; font-size: 12px; color:#444; margin-top: 10px; }
-    input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 12px; }
-    button { padding: 10px 14px; border-radius: 12px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
-    button.primary { border-color: #111; font-weight: 600; }
-    .row { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
-    .kpiGrid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .kpiGrid .card { padding: 12px; }
-    .big { font-size: 22px; font-weight: 800; }
-    .sub { font-size: 12px; color:#666; margin-top: 2px; }
-    table { width:100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-    th, td { border-bottom: 1px solid #eee; padding: 8px; text-align: left; vertical-align: top; }
-    th { font-size: 12px; color:#444; }
-    .pill { display:inline-block; padding: 3px 8px; border: 1px solid #eee; border-radius: 999px; font-size: 12px; color:#444; }
+    :root{
+      --bg: #07090f;
+      --panel: #0b0f1a;
+      --panel2:#0e1424;
+      --border:#1b2440;
+      --text:#e7ecff;
+      --muted:#9aa4c7;
+      --red:#ff4655;        /* VLR vibe */
+      --blue:#1f3b7a;
+      --blue2:#0f2a57;
+      --good:#3cff88;
+      --bad:#ff7a7a;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --radius: 16px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(31,59,122,.25), transparent 60%),
+                  radial-gradient(900px 700px at 80% 20%, rgba(255,70,85,.18), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+    }
+
+    .wrap{
+      max-width: 1200px;
+      margin: 28px auto;
+      padding: 0 18px 36px;
+    }
+
+    .topbar{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+      margin-bottom: 18px;
+    }
+
+    h1{
+      margin:0;
+      font-size: 28px;
+      letter-spacing: .2px;
+    }
+    .subtitle{
+      margin-top:6px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .badge{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,70,85,.14), rgba(31,59,122,.10));
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 13px;
+      box-shadow: var(--shadow);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 16px;
+      align-items:start;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2{
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: .2px;
+    }
+
+    label{
+      display:block;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input, select{
+      width:100%;
+      margin-top: 6px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(11,15,26,.85);
+      color: var(--text);
+      outline:none;
+      font-size: 15px;
+    }
+    input::placeholder{ color: rgba(154,164,199,.6); }
+
+    .row{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .row > *{ flex:1; min-width: 160px; }
+
+    .btns{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 14px;
+    }
+    button{
+      cursor:pointer;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      font-size: 14px;
+    }
+    button.primary{
+      border-color: rgba(255,70,85,.55);
+      background: linear-gradient(180deg, rgba(255,70,85,.25), rgba(255,70,85,.10));
+    }
+    button.danger{
+      border-color: rgba(255,122,122,.5);
+      background: rgba(255,122,122,.10);
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .kpi{
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(11,15,26,.75);
+      padding: 12px;
+    }
+    .kpi .t{ color: var(--muted); font-size: 12px; font-weight: 700; }
+    .kpi .v{ font-size: 22px; font-weight: 800; margin-top: 6px; }
+    .kpi .s{ color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+    .divider{ height:1px; background: rgba(27,36,64,.7); margin: 14px 0; }
+
+    .weekProgress{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .dayBox{
+      border:1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 10px;
+      background: rgba(11,15,26,.6);
+      text-align:center;
+      font-weight: 800;
+      font-size: 12px;
+    }
+    .dayBox span{
+      display:block;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .done{
+      border-color: rgba(60,255,136,.35);
+      background: rgba(60,255,136,.10);
+    }
+    .miss{
+      border-color: rgba(255,70,85,.25);
+      background: rgba(255,70,85,.06);
+    }
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13px;
+      overflow:hidden;
+      border-radius: 14px;
+    }
+    th, td{
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(27,36,64,.7);
+      text-align:left;
+      vertical-align: top;
+    }
+    th{
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing:.2px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      background: rgba(11,15,26,.7);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .dot{ width:8px; height:8px; border-radius: 999px; background: var(--red); }
+    .dot.blue{ background: #6ea8ff; }
+    .dot.good{ background: var(--good); }
+    .dot.bad{ background: var(--bad); }
+
+    .muted{ color: var(--muted); font-size: 13px; }
+    .rightTop{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      .kpis{ grid-template-columns: 1fr; }
+    }
   </style>
 </head>
+
 <body>
-  <h1>Routine Tracker — Dashboard</h1>
-  <p class="muted">Ingresas datos manualmente. La página calcula promedios y récords automáticamente. Guardado local en tu navegador.</p>
-
-  <div class="grid">
-    <!-- Form -->
-    <div class="card">
-      <h2 style="margin-top:0;">Nuevo registro</h2>
-
-      <label>Fecha</label>
-      <input id="date" type="date" />
-
-      <label>Kills</label>
-      <input id="kills" type="number" min="0" step="1" placeholder="Ej: 18" />
-
-      <label>Deaths</label>
-      <input id="deaths" type="number" min="0" step="1" placeholder="Ej: 12" />
-
-      <label>ADR (Average Damage per Round)</label>
-      <input id="adr" type="number" min="0" step="0.1" placeholder="Ej: 145.7" />
-
-      <label>Score (promedio de puntaje)</label>
-      <input id="score" type="number" step="1" placeholder="Ej: 7200" />
-
-      <label>Accuracy (%)</label>
-      <input id="acc" type="number" min="0" max="100" step="0.1" placeholder="Ej: 23.4" />
-
-      <label>Tiempo de rutina (minutos)</label>
-      <input id="mins" type="number" min="0" step="1" placeholder="Ej: 35" />
-
-      <label>Notas (opcional)</label>
-      <input id="notes" type="text" placeholder="Ej: AimLab gridshot / Vandal only / etc." />
-
-      <div class="row">
-        <button class="primary" id="addBtn">Guardar</button>
-        <button id="clearBtn">Borrar todo</button>
-        <button id="exportBtn">Exportar CSV</button>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>Valorant Routine Tracker — Dashboard</h1>
+        <div class="subtitle">Registro manual. Cálculos automáticos: semana/mes, mejor/peor día, y progreso por días.</div>
       </div>
-
-      <p class="muted" style="margin-top:10px;">
-        Tip: si deaths = 0, el K/D se toma como kills (evita infinito y mantiene sentido).
-      </p>
+      <div class="badge">📌 Proyecto: routine-tracker</div>
     </div>
 
-    <!-- Dashboard -->
-    <div>
-      <div class="kpiGrid">
-        <div class="card">
-          <div class="muted">K/D medio</div>
-          <div class="big" id="kdMean">—</div>
-          <div class="sub">Media de K/D</div>
-        </div>
-        <div class="card">
-          <div class="muted">ADR medio</div>
-          <div class="big" id="adrMean">—</div>
-          <div class="sub">Promedio de ADR</div>
-        </div>
-        <div class="card">
-          <div class="muted">Accuracy media</div>
-          <div class="big" id="accMean">—</div>
-          <div class="sub">Promedio (%)</div>
+    <div class="grid">
+      <!-- FORM -->
+      <div class="card">
+        <h2>Nuevo registro</h2>
+
+        <label>Fecha</label>
+        <input id="date" type="date" />
+
+        <div class="row">
+          <div>
+            <label>Tiempo para matar 100 bots (seg)</label>
+            <input id="botTime" type="number" min="0" step="0.1" placeholder="Ej: 62.5" />
+            <div class="muted" style="margin-top:6px;">(Promedio de tus repeticiones, o el mejor tiempo si prefieres)</div>
+          </div>
+          <div>
+            <label>Bots en Hard (15 repeticiones)</label>
+            <input id="hardBots" type="number" min="0" step="1" placeholder="Ej: 430" />
+            <div class="muted" style="margin-top:6px;">(Total de bots destruidos en 15 reps)</div>
+          </div>
         </div>
 
-        <div class="card">
-          <div class="muted">Score medio</div>
-          <div class="big" id="scoreMean">—</div>
-          <div class="sub">Promedio score</div>
+        <div class="divider"></div>
+
+        <h2 style="margin-top:0;">Deathmatch (5 resultados)</h2>
+        <div class="row">
+          <div>
+            <label>Kills totales (en 5 DMs)</label>
+            <input id="dmKills" type="number" min="0" step="1" placeholder="Ej: 112" />
+          </div>
+          <div>
+            <label>Deaths totales (en 5 DMs)</label>
+            <input id="dmDeaths" type="number" min="0" step="1" placeholder="Ej: 86" />
+          </div>
         </div>
-        <div class="card">
-          <div class="muted">Tiempo medio</div>
-          <div class="big" id="timeMean">—</div>
-          <div class="sub">Min por rutina</div>
+
+        <label>Notas (opcional)</label>
+        <input id="notes" type="text" placeholder="Ej: Vandal only / Sheriff / foco en strafe" />
+
+        <div class="btns">
+          <button class="primary" id="addBtn">Guardar</button>
+          <button class="danger" id="clearBtn">Borrar todo</button>
+          <button id="exportBtn">Exportar CSV</button>
         </div>
-        <div class="card">
-          <div class="muted">Registros</div>
-          <div class="big" id="countKpi">0</div>
-          <div class="sub"><span class="pill" id="lastDate">Sin data</span></div>
+
+        <div class="muted" style="margin-top:12px;">
+          Tip: tu “score del día” se calcula así: <b>HardBots + (K/D × 10) − (TiempoBots/10)</b>. Eso decide mejor/peor día.
         </div>
       </div>
 
-      <div class="card" style="margin-top:16px;">
-        <h2 style="margin-top:0;">Récords</h2>
-        <div class="row" style="margin-top:6px;">
-          <span class="pill">Mejor ADR: <b id="bestAdr">—</b></span>
-          <span class="pill">Mejor Score: <b id="bestScore">—</b></span>
-          <span class="pill">Mejor Accuracy: <b id="bestAcc">—</b></span>
-          <span class="pill">Mejor K/D: <b id="bestKd">—</b></span>
+      <!-- DASHBOARD -->
+      <div>
+        <div class="card">
+          <div class="rightTop">
+            <h2 style="margin:0;">Resumen</h2>
+            <div class="row" style="margin:0; gap:10px;">
+              <div style="min-width:220px; flex:1;">
+                <label style="margin-top:0;">Vista</label>
+                <select id="viewMode">
+                  <option value="week">Semana</option>
+                  <option value="month">Mes</option>
+                  <option value="all">Todo</option>
+                </select>
+              </div>
+              <div style="min-width:220px; flex:1;">
+                <label style="margin-top:0;">Período</label>
+                <select id="periodSelect"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="t">Tiempo bots (promedio)</div>
+              <div class="v" id="kpiBotTime">—</div>
+              <div class="s">Segundos (menor = mejor)</div>
+            </div>
+            <div class="kpi">
+              <div class="t">Hard bots (promedio)</div>
+              <div class="v" id="kpiHardBots">—</div>
+              <div class="s">Total/15 reps (mayor = mejor)</div>
+            </div>
+            <div class="kpi">
+              <div class="t">K/D Deathmatch (promedio)</div>
+              <div class="v" id="kpiKD">—</div>
+              <div class="s">De tus 5 DMs (mayor = mejor)</div>
+            </div>
+
+            <div class="kpi">
+              <div class="t">Kills DM (promedio)</div>
+              <div class="v" id="kpiKills">—</div>
+              <div class="s">Kills totales del día</div>
+            </div>
+            <div class="kpi">
+              <div class="t">Deaths DM (promedio)</div>
+              <div class="v" id="kpiDeaths">—</div>
+              <div class="s">Deaths totales del día</div>
+            </div>
+            <div class="kpi">
+              <div class="t">Registros</div>
+              <div class="v" id="kpiCount">0</div>
+              <div class="s" id="kpiLast">Último: —</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <span class="pill"><span class="dot good"></span> Mejor día: <b id="bestDay">—</b></span>
+            <span class="pill"><span class="dot bad"></span> Peor día: <b id="worstDay">—</b></span>
+            <span class="pill"><span class="dot blue"></span> Promedio score: <b id="avgScore">—</b></span>
+          </div>
+
+          <div class="divider"></div>
+
+          <h2 style="margin:0 0 8px;">Progreso (días de la semana)</h2>
+          <div class="muted">Se marca si registraste algo ese día dentro del período seleccionado.</div>
+          <div class="weekProgress" id="weekProgress"></div>
         </div>
-      </div>
 
-      <div class="card" style="margin-top:16px;">
-        <h2 style="margin-top:0;">Historial</h2>
-        <div class="muted" id="countInfo">0 registros</div>
+        <div class="card" style="margin-top:16px;">
+          <h2 style="margin:0;">Historial</h2>
+          <div class="muted" id="countInfo" style="margin-top:6px;">0 registro(s)</div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>K</th>
-              <th>D</th>
-              <th>K/D</th>
-              <th>ADR</th>
-              <th>Score</th>
-              <th>Acc %</th>
-              <th>Min</th>
-              <th>Notas</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-        </table>
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Día</th>
+                <th>Tiempo 100 bots</th>
+                <th>Hard bots (15)</th>
+                <th>DM K</th>
+                <th>DM D</th>
+                <th>K/D</th>
+                <th>Score</th>
+                <th>Notas</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 
 <script>
-  const KEY = "routine_tracker_v2";
+  const KEY = "valorant_routine_tracker_v3";
 
   const el = (id) => document.getElementById(id);
 
-  function load() {
+  const DOW_SHORT = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+  const DOW_MON_FIRST = ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
+
+  function load(){
     try { return JSON.parse(localStorage.getItem(KEY)) ?? []; }
     catch { return []; }
   }
-  function save(items) {
+  function save(items){
     localStorage.setItem(KEY, JSON.stringify(items));
   }
-  function safeNum(v) {
+
+  function safeNum(v){
     const n = Number(v);
     return Number.isFinite(n) ? n : 0;
   }
-  function clamp(n, a, b) {
-    return Math.max(a, Math.min(b, n));
+
+  function kd(k, d){
+    if (d === 0) return k === 0 ? 0 : k;
+    return k / d;
   }
-  function kd(kills, deaths) {
-    if (deaths === 0) return kills === 0 ? 0 : kills;
-    return kills / deaths;
+
+  // Score compuesto para decidir mejor/peor día
+  // (HardBots alto + KD alto + BotTime bajo)
+  function perfScore(item){
+    const botTime = item.botTime || 0;        // menor = mejor
+    const hardBots = item.hardBots || 0;      // mayor = mejor
+    const kdr = kd(item.dmKills||0, item.dmDeaths||0);
+    return (hardBots) + (kdr * 10) - (botTime / 10);
   }
-  function mean(arr) {
+
+  function fmt(n, d=2){
+    const p = Math.pow(10,d);
+    return (Math.round(n*p)/p).toFixed(d);
+  }
+
+  function mean(arr){
     if (!arr.length) return 0;
-    return arr.reduce((x,y)=>x+y,0) / arr.length;
-  }
-  function fmt(n, decimals=2) {
-    const p = Math.pow(10, decimals);
-    return (Math.round(n*p)/p).toFixed(decimals);
-  }
-  function best(arr) {
-    if (!arr.length) return null;
-    return arr.reduce((m,v)=> v>m ? v : m, arr[0]);
+    return arr.reduce((a,b)=>a+b,0) / arr.length;
   }
 
-  function render() {
-    const items = load().slice().sort((a,b)=> (a.date||"").localeCompare(b.date||""));
+  // ISO week (lunes inicio)
+  function isoWeekKey(dateStr){
+    const d = new Date(dateStr + "T00:00:00");
+    // Convertir a jueves de la misma semana
+    const day = (d.getDay() + 6) % 7; // Mon=0..Sun=6
+    d.setDate(d.getDate() - day + 3);
+    const firstThursday = new Date(d.getFullYear(), 0, 4);
+    const firstDay = (firstThursday.getDay() + 6) % 7;
+    firstThursday.setDate(firstThursday.getDate() - firstDay + 3);
+
+    const weekNumber = 1 + Math.round((d - firstThursday) / (7 * 24 * 3600 * 1000));
+    const year = d.getFullYear();
+    return `${year}-W${String(weekNumber).padStart(2,'0')}`;
+  }
+
+  function monthKey(dateStr){
+    const d = new Date(dateStr + "T00:00:00");
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    return `${y}-${m}`;
+  }
+
+  function dowName(dateStr){
+    const d = new Date(dateStr + "T00:00:00");
+    return DOW_SHORT[d.getDay()];
+  }
+
+  function periodKeyByMode(mode, dateStr){
+    if (mode === "week") return isoWeekKey(dateStr);
+    if (mode === "month") return monthKey(dateStr);
+    return "all";
+  }
+
+  function getItemsFor(mode, key){
+    const items = load();
+    if (mode === "all") return items;
+    return items.filter(x => periodKeyByMode(mode, x.date) === key);
+  }
+
+  function uniquePeriods(mode){
+    const items = load().filter(x => x.date);
+    if (mode === "all") return ["all"];
+    const set = new Set(items.map(x => periodKeyByMode(mode, x.date)));
+    // ordenar desc
+    return Array.from(set).sort((a,b)=> b.localeCompare(a));
+  }
+
+  function bestWorst(items){
+    if (!items.length) return { best:null, worst:null, avgScore:0 };
+    let best = items[0], worst = items[0];
+    let scores = [];
+    for (const it of items){
+      const s = perfScore(it);
+      scores.push(s);
+      if (s > perfScore(best)) best = it;
+      if (s < perfScore(worst)) worst = it;
+    }
+    return { best, worst, avgScore: mean(scores) };
+  }
+
+  function renderPeriodSelect(){
+    const mode = el("viewMode").value;
+    const periods = uniquePeriods(mode);
+    const ps = el("periodSelect");
+    ps.innerHTML = "";
+    for (const p of periods){
+      const opt = document.createElement("option");
+      opt.value = p;
+      opt.textContent = (mode === "all") ? "Todo" : p;
+      ps.appendChild(opt);
+    }
+
+    // Seleccionar el período más reciente que exista
+    ps.value = periods[0] ?? (mode === "all" ? "all" : "");
+  }
+
+  function renderWeekProgress(items, mode){
+    const box = el("weekProgress");
+    box.innerHTML = "";
+
+    // Construimos set de días presentes en el período (Lun..Dom)
+    const has = new Set();
+    for (const it of items){
+      const d = new Date(it.date + "T00:00:00");
+      const dowMonFirst = (d.getDay() + 6) % 7; // Mon=0..Sun=6
+      has.add(dowMonFirst);
+    }
+
+    for (let i=0;i<7;i++){
+      const div = document.createElement("div");
+      div.className = "dayBox " + (has.has(i) ? "done" : "miss");
+      div.innerHTML = `${DOW_MON_FIRST[i]}<span>${has.has(i) ? "Hecho" : "—"}</span>`;
+      box.appendChild(div);
+    }
+  }
+
+  function render(){
+    const mode = el("viewMode").value;
+    const period = el("periodSelect").value || (mode === "all" ? "all" : "");
+    const allItems = load().slice().sort((a,b)=> (a.date||"").localeCompare(b.date||""));
+    const items = (mode === "all") ? allItems : allItems.filter(x => periodKeyByMode(mode, x.date) === period);
+
     el("countInfo").textContent = `${items.length} registro(s)`;
-    el("countKpi").textContent = String(items.length);
+    el("kpiCount").textContent = String(items.length);
 
-    const last = items.length ? items[items.length-1].date : "Sin data";
-    el("lastDate").textContent = `Último: ${last}`;
+    const last = allItems.length ? allItems[allItems.length-1].date : "—";
+    el("kpiLast").textContent = `Último: ${last}`;
+    el("kpiCount").textContent = String(items.length);
+    el("kpiLast").textContent = `Último: ${last}`;
 
-    // Series
-    const kdList = items.map(x => kd(x.kills, x.deaths));
-    const adrList = items.map(x => x.adr);
-    const scoreList = items.map(x => x.score);
-    const accList = items.map(x => x.acc);
-    const timeList = items.map(x => x.mins);
+    // KPIs (promedios)
+    const botTimes = items.map(x => x.botTime || 0).filter(x => x > 0);
+    const hardBots = items.map(x => x.hardBots || 0);
+    const dmKills = items.map(x => x.dmKills || 0);
+    const dmDeaths = items.map(x => x.dmDeaths || 0);
+    const kds = items.map(x => kd(x.dmKills||0, x.dmDeaths||0));
 
-    // Means
-    el("kdMean").textContent = items.length ? fmt(mean(kdList), 2) : "—";
-    el("adrMean").textContent = items.length ? fmt(mean(adrList), 1) : "—";
-    el("scoreMean").textContent = items.length ? fmt(mean(scoreList), 0) : "—";
-    el("accMean").textContent = items.length ? fmt(mean(accList), 1) + "%" : "—";
-    el("timeMean").textContent = items.length ? fmt(mean(timeList), 0) + " min" : "—";
+    el("kpiBotTime").textContent = botTimes.length ? `${fmt(mean(botTimes),1)}s` : "—";
+    el("kpiHardBots").textContent = items.length ? fmt(mean(hardBots),0) : "—";
+    el("kpiKD").textContent = items.length ? fmt(mean(kds),2) : "—";
+    el("kpiKills").textContent = items.length ? fmt(mean(dmKills),0) : "—";
+    el("kpiDeaths").textContent = items.length ? fmt(mean(dmDeaths),0) : "—";
+    el("kpiCount").textContent = String(items.length);
 
-    // Bests
-    const bAdr = best(adrList);
-    const bScore = best(scoreList);
-    const bAcc = best(accList);
-    const bKd = best(kdList);
+    const bw = bestWorst(items);
+    el("bestDay").textContent = bw.best ? `${bw.best.date} (${dowName(bw.best.date)})` : "—";
+    el("worstDay").textContent = bw.worst ? `${bw.worst.date} (${dowName(bw.worst.date)})` : "—";
+    el("avgScore").textContent = items.length ? fmt(bw.avgScore,1) : "—";
 
-    el("bestAdr").textContent = items.length ? fmt(bAdr ?? 0, 1) : "—";
-    el("bestScore").textContent = items.length ? fmt(bScore ?? 0, 0) : "—";
-    el("bestAcc").textContent = items.length ? fmt(bAcc ?? 0, 1) + "%" : "—";
-    el("bestKd").textContent = items.length ? fmt(bKd ?? 0, 2) : "—";
+    renderWeekProgress(items, mode);
 
-    // Table
+    // tabla
     const tbody = el("tbody");
     tbody.innerHTML = "";
-    for (const x of items) {
+    for (const x of items.slice().sort((a,b)=> (b.date||"").localeCompare(a.date||""))){
       const tr = document.createElement("tr");
+      const kdr = kd(x.dmKills||0, x.dmDeaths||0);
+      const score = perfScore(x);
+
       tr.innerHTML = `
         <td>${x.date || ""}</td>
-        <td>${x.kills}</td>
-        <td>${x.deaths}</td>
-        <td>${fmt(kd(x.kills, x.deaths), 2)}</td>
-        <td>${fmt(x.adr, 1)}</td>
-        <td>${fmt(x.score, 0)}</td>
-        <td>${fmt(x.acc, 1)}%</td>
-        <td>${x.mins}</td>
-        <td>${(x.notes || "").replaceAll("<","&lt;").replaceAll(">","&gt;")}</td>
+        <td>${x.date ? dowName(x.date) : ""}</td>
+        <td>${x.botTime ? fmt(x.botTime,1) + "s" : "—"}</td>
+        <td>${fmt(x.hardBots||0,0)}</td>
+        <td>${fmt(x.dmKills||0,0)}</td>
+        <td>${fmt(x.dmDeaths||0,0)}</td>
+        <td>${fmt(kdr,2)}</td>
+        <td>${fmt(score,1)}</td>
+        <td>${(x.notes||"").replaceAll("<","&lt;").replaceAll(">","&gt;")}</td>
         <td><button data-id="${x.id}">Eliminar</button></td>
       `;
+
       tr.querySelector("button").addEventListener("click", () => {
         const updated = load().filter(i => i.id !== x.id);
         save(updated);
+        // refrescar períodos y render
+        renderPeriodSelect();
         render();
       });
+
       tbody.appendChild(tr);
     }
   }
 
-  function addItem() {
+  function addItem(){
     const date = el("date").value || new Date().toISOString().slice(0,10);
-    const kills = Math.max(0, Math.floor(safeNum(el("kills").value)));
-    const deaths = Math.max(0, Math.floor(safeNum(el("deaths").value)));
-
-    const adr = Math.max(0, safeNum(el("adr").value));
-    const score = safeNum(el("score").value);
-    const acc = clamp(safeNum(el("acc").value), 0, 100);
-
-    const mins = Math.max(0, Math.floor(safeNum(el("mins").value)));
+    const botTime = Math.max(0, safeNum(el("botTime").value));
+    const hardBots = Math.max(0, Math.floor(safeNum(el("hardBots").value)));
+    const dmKills = Math.max(0, Math.floor(safeNum(el("dmKills").value)));
+    const dmDeaths = Math.max(0, Math.floor(safeNum(el("dmDeaths").value)));
     const notes = (el("notes").value || "").trim();
 
     const item = {
       id: crypto.randomUUID(),
-      date, kills, deaths, adr, score, acc, mins, notes
+      date, botTime, hardBots, dmKills, dmDeaths, notes
     };
 
     const items = load();
     items.push(item);
     save(items);
 
-    // Clear fields (mantén la fecha)
-    el("kills").value = "";
-    el("deaths").value = "";
-    el("adr").value = "";
-    el("score").value = "";
-    el("acc").value = "";
-    el("mins").value = "";
+    // limpiar inputs (conservar fecha)
+    el("botTime").value = "";
+    el("hardBots").value = "";
+    el("dmKills").value = "";
+    el("dmDeaths").value = "";
     el("notes").value = "";
 
+    renderPeriodSelect();
     render();
   }
 
-  function clearAll() {
+  function clearAll(){
+    const ok = confirm("¿Seguro que quieres borrar todo? Esto no se puede deshacer.");
+    if (!ok) return;
     localStorage.removeItem(KEY);
+    renderPeriodSelect();
     render();
   }
 
-  function exportCSV() {
+  function exportCSV(){
     const items = load();
-    const header = ["date","kills","deaths","kd","adr","score","acc","mins","notes"];
-    const rows = items.map(x => [
-      x.date,
-      x.kills,
-      x.deaths,
-      kd(x.kills, x.deaths).toFixed(4),
-      x.adr,
-      x.score,
-      x.acc,
-      x.mins,
-      (x.notes ?? "").replaceAll('"','""')
-    ]);
+    const header = ["date","dow","botTimeSeconds","hardBots15reps","dmKillsTotal5","dmDeathsTotal5","dmKD","score","notes"];
+    const rows = items.map(x => {
+      const kdr = kd(x.dmKills||0, x.dmDeaths||0);
+      const s = perfScore(x);
+      return [
+        x.date,
+        x.date ? dowName(x.date) : "",
+        x.botTime || 0,
+        x.hardBots || 0,
+        x.dmKills || 0,
+        x.dmDeaths || 0,
+        kdr.toFixed(4),
+        s.toFixed(2),
+        (x.notes ?? "").replaceAll('"','""')
+      ];
+    });
 
     const csv = [header, ...rows]
       .map(r => r.map(v => `"${String(v)}"`).join(","))
@@ -296,18 +667,28 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "rutinas_dashboard.csv";
+    a.download = "valorant_routine_tracker.csv";
     a.click();
     URL.revokeObjectURL(url);
   }
 
+  // eventos
   el("addBtn").addEventListener("click", addItem);
   el("clearBtn").addEventListener("click", clearAll);
   el("exportBtn").addEventListener("click", exportCSV);
 
-  // Default date = hoy
+  el("viewMode").addEventListener("change", () => {
+    renderPeriodSelect();
+    render();
+  });
+
+  el("periodSelect").addEventListener("change", () => render());
+
+  // fecha default
   el("date").value = new Date().toISOString().slice(0,10);
 
+  // init
+  renderPeriodSelect();
   render();
 </script>
 </body>
