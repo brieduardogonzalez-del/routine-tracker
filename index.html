@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Routine Tracker (KPI Dashboard)</title>
+  <style>
+    body { font-family: system-ui, Arial; margin: 24px; line-height: 1.35; }
+    h1 { margin-bottom: 6px; }
+    .muted { color:#666; font-size:12px; }
+    .grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 16px; max-width: 1100px; }
+    .card { border: 1px solid #ddd; border-radius: 14px; padding: 16px; background:#fff; }
+    label { display:block; font-size: 12px; color:#444; margin-top: 10px; }
+    input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 12px; }
+    button { padding: 10px 14px; border-radius: 12px; border: 1px solid #ccc; background: #fff; cursor: pointer; }
+    button.primary { border-color: #111; font-weight: 600; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    .kpiGrid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .kpiGrid .card { padding: 12px; }
+    .big { font-size: 22px; font-weight: 800; }
+    .sub { font-size: 12px; color:#666; margin-top: 2px; }
+    table { width:100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+    th, td { border-bottom: 1px solid #eee; padding: 8px; text-align: left; vertical-align: top; }
+    th { font-size: 12px; color:#444; }
+    .pill { display:inline-block; padding: 3px 8px; border: 1px solid #eee; border-radius: 999px; font-size: 12px; color:#444; }
+  </style>
+</head>
+<body>
+  <h1>Routine Tracker — Dashboard</h1>
+  <p class="muted">Ingresas datos manualmente. La página calcula promedios y récords automáticamente. Guardado local en tu navegador.</p>
+
+  <div class="grid">
+    <!-- Form -->
+    <div class="card">
+      <h2 style="margin-top:0;">Nuevo registro</h2>
+
+      <label>Fecha</label>
+      <input id="date" type="date" />
+
+      <label>Kills</label>
+      <input id="kills" type="number" min="0" step="1" placeholder="Ej: 18" />
+
+      <label>Deaths</label>
+      <input id="deaths" type="number" min="0" step="1" placeholder="Ej: 12" />
+
+      <label>ADR (Average Damage per Round)</label>
+      <input id="adr" type="number" min="0" step="0.1" placeholder="Ej: 145.7" />
+
+      <label>Score (promedio de puntaje)</label>
+      <input id="score" type="number" step="1" placeholder="Ej: 7200" />
+
+      <label>Accuracy (%)</label>
+      <input id="acc" type="number" min="0" max="100" step="0.1" placeholder="Ej: 23.4" />
+
+      <label>Tiempo de rutina (minutos)</label>
+      <input id="mins" type="number" min="0" step="1" placeholder="Ej: 35" />
+
+      <label>Notas (opcional)</label>
+      <input id="notes" type="text" placeholder="Ej: AimLab gridshot / Vandal only / etc." />
+
+      <div class="row">
+        <button class="primary" id="addBtn">Guardar</button>
+        <button id="clearBtn">Borrar todo</button>
+        <button id="exportBtn">Exportar CSV</button>
+      </div>
+
+      <p class="muted" style="margin-top:10px;">
+        Tip: si deaths = 0, el K/D se toma como kills (evita infinito y mantiene sentido).
+      </p>
+    </div>
+
+    <!-- Dashboard -->
+    <div>
+      <div class="kpiGrid">
+        <div class="card">
+          <div class="muted">K/D medio</div>
+          <div class="big" id="kdMean">—</div>
+          <div class="sub">Media de K/D</div>
+        </div>
+        <div class="card">
+          <div class="muted">ADR medio</div>
+          <div class="big" id="adrMean">—</div>
+          <div class="sub">Promedio de ADR</div>
+        </div>
+        <div class="card">
+          <div class="muted">Accuracy media</div>
+          <div class="big" id="accMean">—</div>
+          <div class="sub">Promedio (%)</div>
+        </div>
+
+        <div class="card">
+          <div class="muted">Score medio</div>
+          <div class="big" id="scoreMean">—</div>
+          <div class="sub">Promedio score</div>
+        </div>
+        <div class="card">
+          <div class="muted">Tiempo medio</div>
+          <div class="big" id="timeMean">—</div>
+          <div class="sub">Min por rutina</div>
+        </div>
+        <div class="card">
+          <div class="muted">Registros</div>
+          <div class="big" id="countKpi">0</div>
+          <div class="sub"><span class="pill" id="lastDate">Sin data</span></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <h2 style="margin-top:0;">Récords</h2>
+        <div class="row" style="margin-top:6px;">
+          <span class="pill">Mejor ADR: <b id="bestAdr">—</b></span>
+          <span class="pill">Mejor Score: <b id="bestScore">—</b></span>
+          <span class="pill">Mejor Accuracy: <b id="bestAcc">—</b></span>
+          <span class="pill">Mejor K/D: <b id="bestKd">—</b></span>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <h2 style="margin-top:0;">Historial</h2>
+        <div class="muted" id="countInfo">0 registros</div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>K</th>
+              <th>D</th>
+              <th>K/D</th>
+              <th>ADR</th>
+              <th>Score</th>
+              <th>Acc %</th>
+              <th>Min</th>
+              <th>Notas</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const KEY = "routine_tracker_v2";
+
+  const el = (id) => document.getElementById(id);
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) ?? []; }
+    catch { return []; }
+  }
+  function save(items) {
+    localStorage.setItem(KEY, JSON.stringify(items));
+  }
+  function safeNum(v) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : 0;
+  }
+  function clamp(n, a, b) {
+    return Math.max(a, Math.min(b, n));
+  }
+  function kd(kills, deaths) {
+    if (deaths === 0) return kills === 0 ? 0 : kills;
+    return kills / deaths;
+  }
+  function mean(arr) {
+    if (!arr.length) return 0;
+    return arr.reduce((x,y)=>x+y,0) / arr.length;
+  }
+  function fmt(n, decimals=2) {
+    const p = Math.pow(10, decimals);
+    return (Math.round(n*p)/p).toFixed(decimals);
+  }
+  function best(arr) {
+    if (!arr.length) return null;
+    return arr.reduce((m,v)=> v>m ? v : m, arr[0]);
+  }
+
+  function render() {
+    const items = load().slice().sort((a,b)=> (a.date||"").localeCompare(b.date||""));
+    el("countInfo").textContent = `${items.length} registro(s)`;
+    el("countKpi").textContent = String(items.length);
+
+    const last = items.length ? items[items.length-1].date : "Sin data";
+    el("lastDate").textContent = `Último: ${last}`;
+
+    // Series
+    const kdList = items.map(x => kd(x.kills, x.deaths));
+    const adrList = items.map(x => x.adr);
+    const scoreList = items.map(x => x.score);
+    const accList = items.map(x => x.acc);
+    const timeList = items.map(x => x.mins);
+
+    // Means
+    el("kdMean").textContent = items.length ? fmt(mean(kdList), 2) : "—";
+    el("adrMean").textContent = items.length ? fmt(mean(adrList), 1) : "—";
+    el("scoreMean").textContent = items.length ? fmt(mean(scoreList), 0) : "—";
+    el("accMean").textContent = items.length ? fmt(mean(accList), 1) + "%" : "—";
+    el("timeMean").textContent = items.length ? fmt(mean(timeList), 0) + " min" : "—";
+
+    // Bests
+    const bAdr = best(adrList);
+    const bScore = best(scoreList);
+    const bAcc = best(accList);
+    const bKd = best(kdList);
+
+    el("bestAdr").textContent = items.length ? fmt(bAdr ?? 0, 1) : "—";
+    el("bestScore").textContent = items.length ? fmt(bScore ?? 0, 0) : "—";
+    el("bestAcc").textContent = items.length ? fmt(bAcc ?? 0, 1) + "%" : "—";
+    el("bestKd").textContent = items.length ? fmt(bKd ?? 0, 2) : "—";
+
+    // Table
+    const tbody = el("tbody");
+    tbody.innerHTML = "";
+    for (const x of items) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${x.date || ""}</td>
+        <td>${x.kills}</td>
+        <td>${x.deaths}</td>
+        <td>${fmt(kd(x.kills, x.deaths), 2)}</td>
+        <td>${fmt(x.adr, 1)}</td>
+        <td>${fmt(x.score, 0)}</td>
+        <td>${fmt(x.acc, 1)}%</td>
+        <td>${x.mins}</td>
+        <td>${(x.notes || "").replaceAll("<","&lt;").replaceAll(">","&gt;")}</td>
+        <td><button data-id="${x.id}">Eliminar</button></td>
+      `;
+      tr.querySelector("button").addEventListener("click", () => {
+        const updated = load().filter(i => i.id !== x.id);
+        save(updated);
+        render();
+      });
+      tbody.appendChild(tr);
+    }
+  }
+
+  function addItem() {
+    const date = el("date").value || new Date().toISOString().slice(0,10);
+    const kills = Math.max(0, Math.floor(safeNum(el("kills").value)));
+    const deaths = Math.max(0, Math.floor(safeNum(el("deaths").value)));
+
+    const adr = Math.max(0, safeNum(el("adr").value));
+    const score = safeNum(el("score").value);
+    const acc = clamp(safeNum(el("acc").value), 0, 100);
+
+    const mins = Math.max(0, Math.floor(safeNum(el("mins").value)));
+    const notes = (el("notes").value || "").trim();
+
+    const item = {
+      id: crypto.randomUUID(),
+      date, kills, deaths, adr, score, acc, mins, notes
+    };
+
+    const items = load();
+    items.push(item);
+    save(items);
+
+    // Clear fields (mantén la fecha)
+    el("kills").value = "";
+    el("deaths").value = "";
+    el("adr").value = "";
+    el("score").value = "";
+    el("acc").value = "";
+    el("mins").value = "";
+    el("notes").value = "";
+
+    render();
+  }
+
+  function clearAll() {
+    localStorage.removeItem(KEY);
+    render();
+  }
+
+  function exportCSV() {
+    const items = load();
+    const header = ["date","kills","deaths","kd","adr","score","acc","mins","notes"];
+    const rows = items.map(x => [
+      x.date,
+      x.kills,
+      x.deaths,
+      kd(x.kills, x.deaths).toFixed(4),
+      x.adr,
+      x.score,
+      x.acc,
+      x.mins,
+      (x.notes ?? "").replaceAll('"','""')
+    ]);
+
+    const csv = [header, ...rows]
+      .map(r => r.map(v => `"${String(v)}"`).join(","))
+      .join("\n");
+
+    const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "rutinas_dashboard.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  el("addBtn").addEventListener("click", addItem);
+  el("clearBtn").addEventListener("click", clearAll);
+  el("exportBtn").addEventListener("click", exportCSV);
+
+  // Default date = hoy
+  el("date").value = new Date().toISOString().slice(0,10);
+
+  render();
+</script>
+</body>
+</html>
