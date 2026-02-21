@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Valorant Routine Tracker</title>
+  <title>Valorant Routine Tracker (rutina de nats)</title>
 
   <!-- Tipografía semi-pro -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,12 +14,10 @@
     :root{
       --bg: #07090f;
       --panel: #0b0f1a;
-      --panel2:#0e1424;
       --border:#1b2440;
       --text:#e7ecff;
       --muted:#9aa4c7;
       --red:#ff4655;
-      --blue:#1f3b7a;
       --good:#3cff88;
       --bad:#ff7a7a;
       --shadow: 0 10px 30px rgba(0,0,0,.45);
@@ -38,11 +36,12 @@
     .topbar{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom: 18px; }
     h1{ margin:0; font-size: 28px; letter-spacing: .2px; }
     .subtitle{ margin-top:6px; color: var(--muted); font-size: 14px; }
+
     .badge{
       border:1px solid var(--border);
       background: linear-gradient(180deg, rgba(255,70,85,.14), rgba(31,59,122,.10));
       padding: 10px 12px; border-radius: 999px;
-      color: var(--text); font-weight: 700; font-size: 13px;
+      color: var(--text); font-weight: 800; font-size: 13px;
       box-shadow: var(--shadow);
       white-space:nowrap;
     }
@@ -57,7 +56,8 @@
     }
     .card h2{ margin: 0 0 10px; font-size: 18px; letter-spacing: .2px; }
 
-    label{ display:block; margin-top: 10px; color: var(--muted); font-size: 13px; font-weight: 700; }
+    label{ display:block; margin-top: 10px; color: var(--muted); font-size: 13px; font-weight: 800; }
+
     input, select{
       width:100%; margin-top: 6px; padding: 12px 12px;
       border-radius: 12px;
@@ -70,14 +70,26 @@
     input::placeholder{ color: rgba(154,164,199,.6); }
 
     .row{ display:flex; gap:10px; flex-wrap:wrap; }
-    .row > *{ flex:1; min-width: 160px; }
+    .row > *{ flex:1; min-width: 150px; }
+
+    .gridInputs{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .gridInputs.three{ grid-template-columns: repeat(3, 1fr); }
+    .gridInputs.five{ grid-template-columns: repeat(5, 1fr); }
+
+    .muted{ color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+    .divider{ height:1px; background: rgba(27,36,64,.7); margin: 14px 0; }
 
     .btns{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
     button{
       cursor:pointer;
       border-radius: 12px;
       padding: 11px 14px;
-      font-weight: 800;
+      font-weight: 900;
       border: 1px solid var(--border);
       background: rgba(255,255,255,.03);
       color: var(--text);
@@ -99,29 +111,9 @@
       background: rgba(11,15,26,.75);
       padding: 12px;
     }
-    .kpi .t{ color: var(--muted); font-size: 12px; font-weight: 800; }
+    .kpi .t{ color: var(--muted); font-size: 12px; font-weight: 900; }
     .kpi .v{ font-size: 22px; font-weight: 900; margin-top: 6px; }
     .kpi .s{ color: var(--muted); font-size: 12px; margin-top: 3px; }
-
-    .divider{ height:1px; background: rgba(27,36,64,.7); margin: 14px 0; }
-
-    .weekProgress{ display:grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 10px; }
-    .dayBox{
-      border:1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 10px;
-      background: rgba(11,15,26,.6);
-      text-align:center;
-      font-weight: 900;
-      font-size: 12px;
-    }
-    .dayBox span{ display:block; margin-top: 6px; font-size: 12px; font-weight: 800; color: var(--muted); }
-    .done{ border-color: rgba(60,255,136,.35); background: rgba(60,255,136,.10); }
-    .miss{ border-color: rgba(255,70,85,.25); background: rgba(255,70,85,.06); }
-
-    table{ width:100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; border-radius: 14px; overflow:hidden; }
-    th, td{ padding: 10px 10px; border-bottom: 1px solid rgba(27,36,64,.7); text-align:left; vertical-align: top; }
-    th{ color: var(--muted); font-size: 12px; font-weight: 900; letter-spacing:.2px; }
 
     .pill{
       display:inline-flex;
@@ -133,18 +125,37 @@
       background: rgba(11,15,26,.7);
       color: var(--text);
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
     }
     .dot{ width:8px; height:8px; border-radius: 999px; background: var(--red); }
-    .dot.blue{ background: #6ea8ff; }
     .dot.good{ background: var(--good); }
     .dot.bad{ background: var(--bad); }
-    .muted{ color: var(--muted); font-size: 13px; }
-    .rightTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .dot.blue{ background: #6ea8ff; }
+
+    .weekProgress{ display:grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 10px; }
+    .dayBox{
+      border:1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 10px;
+      background: rgba(11,15,26,.6);
+      text-align:center;
+      font-weight: 900;
+      font-size: 12px;
+    }
+    .dayBox span{ display:block; margin-top: 6px; font-size: 12px; font-weight: 900; color: var(--muted); }
+    .done{ border-color: rgba(60,255,136,.35); background: rgba(60,255,136,.10); }
+    .miss{ border-color: rgba(255,70,85,.25); background: rgba(255,70,85,.06); }
+
+    table{ width:100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; border-radius: 14px; overflow:hidden; }
+    th, td{ padding: 10px 10px; border-bottom: 1px solid rgba(27,36,64,.7); text-align:left; vertical-align: top; }
+    th{ color: var(--muted); font-size: 12px; font-weight: 900; letter-spacing:.2px; }
 
     @media (max-width: 980px){
       .grid{ grid-template-columns: 1fr; }
       .kpis{ grid-template-columns: 1fr; }
+      .gridInputs{ grid-template-columns: repeat(2, 1fr); }
+      .gridInputs.three{ grid-template-columns: repeat(2, 1fr); }
+      .gridInputs.five{ grid-template-columns: repeat(2, 1fr); }
       .badge{ display:none; }
     }
   </style>
@@ -154,8 +165,8 @@
   <div class="wrap">
     <div class="topbar">
       <div>
-        <h1>Valorant Routine Tracker — Dashboard</h1>
-        <div class="subtitle">5 tiempos de bots + Hard bots + 5 Deathmatch. Semana/Mes, mejor/peor día, progreso por días.</div>
+        <h1>Valorant Routine Tracker <span style="color:var(--muted); font-weight:800;">(rutina de nats)</span></h1>
+        <div class="subtitle">100 bots (5 tiempos) · Hard (15 reps) · Deathmatch (5 DMs). Semana/Mes + mejor/peor día.</div>
       </div>
       <div class="badge">🔻 Dark Mode · VLR Style</div>
     </div>
@@ -168,37 +179,59 @@
         <label>Fecha</label>
         <input id="date" type="date" />
 
-        <label>100 Bots — 5 tiempos (seg)</label>
-        <div class="row">
-          <div><input id="botT1" type="number" min="0" step="0.1" placeholder="T1 (ej: 62.5)" /></div>
-          <div><input id="botT2" type="number" min="0" step="0.1" placeholder="T2 (ej: 61.8)" /></div>
-          <div><input id="botT3" type="number" min="0" step="0.1" placeholder="T3 (ej: 63.1)" /></div>
-          <div><input id="botT4" type="number" min="0" step="0.1" placeholder="T4 (ej: 60.9)" /></div>
-          <div><input id="botT5" type="number" min="0" step="0.1" placeholder="T5 (ej: 62.0)" /></div>
-        </div>
-        <div class="muted" style="margin-top:6px;">Se calcula el promedio (avg) y el mejor tiempo (best = más bajo).</div>
+        <div class="divider"></div>
 
-        <div class="row">
-          <div>
-            <label>Bots en Hard (15 repeticiones)</label>
-            <input id="hardBots" type="number" min="0" step="1" placeholder="Ej: 430" />
-            <div class="muted" style="margin-top:6px;">Total de bots destruidos en 15 reps.</div>
-          </div>
+        <h2 style="margin-top:0;">100 Bots</h2>
+        <label>5 tiempos (seg)</label>
+        <div class="gridInputs five">
+          <input id="botT1" type="number" min="0" step="0.1" placeholder="T1 (ej: 62.5)" />
+          <input id="botT2" type="number" min="0" step="0.1" placeholder="T2 (ej: 61.8)" />
+          <input id="botT3" type="number" min="0" step="0.1" placeholder="T3 (ej: 63.1)" />
+          <input id="botT4" type="number" min="0" step="0.1" placeholder="T4 (ej: 60.9)" />
+          <input id="botT5" type="number" min="0" step="0.1" placeholder="T5 (ej: 62.0)" />
         </div>
+        <div class="muted">Se calcula el promedio (avg) y el mejor (best = más bajo).</div>
 
         <div class="divider"></div>
 
-        <h2 style="margin-top:0;">Deathmatch (5 resultados)</h2>
-        <div class="row">
-          <div>
-            <label>Kills totales (en 5 DMs)</label>
-            <input id="dmKills" type="number" min="0" step="1" placeholder="Ej: 112" />
-          </div>
-          <div>
-            <label>Deaths totales (en 5 DMs)</label>
-            <input id="dmDeaths" type="number" min="0" step="1" placeholder="Ej: 86" />
-          </div>
+        <h2 style="margin-top:0;">Hard (15 repeticiones)</h2>
+        <label>Bots destruidos en cada rep</label>
+        <div class="gridInputs three">
+          <input id="h1" type="number" min="0" step="1" placeholder="R1" />
+          <input id="h2" type="number" min="0" step="1" placeholder="R2" />
+          <input id="h3" type="number" min="0" step="1" placeholder="R3" />
+          <input id="h4" type="number" min="0" step="1" placeholder="R4" />
+          <input id="h5" type="number" min="0" step="1" placeholder="R5" />
+          <input id="h6" type="number" min="0" step="1" placeholder="R6" />
+          <input id="h7" type="number" min="0" step="1" placeholder="R7" />
+          <input id="h8" type="number" min="0" step="1" placeholder="R8" />
+          <input id="h9" type="number" min="0" step="1" placeholder="R9" />
+          <input id="h10" type="number" min="0" step="1" placeholder="R10" />
+          <input id="h11" type="number" min="0" step="1" placeholder="R11" />
+          <input id="h12" type="number" min="0" step="1" placeholder="R12" />
+          <input id="h13" type="number" min="0" step="1" placeholder="R13" />
+          <input id="h14" type="number" min="0" step="1" placeholder="R14" />
+          <input id="h15" type="number" min="0" step="1" placeholder="R15" />
         </div>
+        <div class="muted">Calcula: total, promedio por rep, y mejor rep (máximo).</div>
+
+        <div class="divider"></div>
+
+        <h2 style="margin-top:0;">Deathmatch (5 DMs)</h2>
+        <label>Por DM: kills y deaths</label>
+        <div class="gridInputs five">
+          <input id="dm1k" type="number" min="0" step="1" placeholder="DM1 K" />
+          <input id="dm1d" type="number" min="0" step="1" placeholder="DM1 D" />
+          <input id="dm2k" type="number" min="0" step="1" placeholder="DM2 K" />
+          <input id="dm2d" type="number" min="0" step="1" placeholder="DM2 D" />
+          <input id="dm3k" type="number" min="0" step="1" placeholder="DM3 K" />
+          <input id="dm3d" type="number" min="0" step="1" placeholder="DM3 D" />
+          <input id="dm4k" type="number" min="0" step="1" placeholder="DM4 K" />
+          <input id="dm4d" type="number" min="0" step="1" placeholder="DM4 D" />
+          <input id="dm5k" type="number" min="0" step="1" placeholder="DM5 K" />
+          <input id="dm5d" type="number" min="0" step="1" placeholder="DM5 D" />
+        </div>
+        <div class="muted">Calcula: totales, promedio por DM, K/D total y mejor K/D (DM).</div>
 
         <label>Notas (opcional)</label>
         <input id="notes" type="text" placeholder="Ej: Vandal only / Sheriff / foco en strafe" />
@@ -210,28 +243,29 @@
         </div>
 
         <div class="muted" style="margin-top:12px;">
-          Tip: “score del día” = <b>HardBots + (K/D × 10) − (AvgBots/10)</b>. Eso decide mejor/peor día.
+          Score del día = <b>(HardTotal) + (K/D total × 10) − (BotsAvg/10)</b>.
         </div>
       </div>
 
       <!-- DASHBOARD -->
       <div>
         <div class="card">
-          <div class="rightTop">
-            <h2 style="margin:0;">Resumen</h2>
-            <div class="row" style="margin:0; gap:10px;">
-              <div style="min-width:220px; flex:1;">
-                <label style="margin-top:0;">Vista</label>
-                <select id="viewMode">
-                  <option value="week">Semana</option>
-                  <option value="month">Mes</option>
-                  <option value="all">Todo</option>
-                </select>
-              </div>
-              <div style="min-width:220px; flex:1;">
-                <label style="margin-top:0;">Período</label>
-                <select id="periodSelect"></select>
-              </div>
+          <div class="row" style="align-items:flex-end;">
+            <div style="flex:1; min-width:240px;">
+              <h2 style="margin:0;">Resumen</h2>
+              <div class="muted" style="margin-top:6px;">Promedios por período y highlights.</div>
+            </div>
+            <div style="flex:1; min-width:220px;">
+              <label style="margin-top:0;">Vista</label>
+              <select id="viewMode">
+                <option value="week">Semana</option>
+                <option value="month">Mes</option>
+                <option value="all">Todo</option>
+              </select>
+            </div>
+            <div style="flex:1; min-width:220px;">
+              <label style="margin-top:0;">Período</label>
+              <select id="periodSelect"></select>
             </div>
           </div>
 
@@ -239,30 +273,30 @@
 
           <div class="kpis">
             <div class="kpi">
-              <div class="t">Bots (avg)</div>
+              <div class="t">100 bots (avg)</div>
               <div class="v" id="kpiBotAvg">—</div>
-              <div class="s">Segundos (menor = mejor)</div>
+              <div class="s">Seg (menor = mejor)</div>
             </div>
             <div class="kpi">
-              <div class="t">Bots (best)</div>
+              <div class="t">100 bots (best)</div>
               <div class="v" id="kpiBotBest">—</div>
-              <div class="s">Mejor tiempo histórico/período</div>
+              <div class="s">Mejor tiempo</div>
             </div>
             <div class="kpi">
-              <div class="t">Hard bots (promedio)</div>
-              <div class="v" id="kpiHardBots">—</div>
-              <div class="s">Total/15 reps (mayor = mejor)</div>
+              <div class="t">Hard total (avg)</div>
+              <div class="v" id="kpiHardTotal">—</div>
+              <div class="s">Total/15 reps</div>
             </div>
 
             <div class="kpi">
-              <div class="t">K/D Deathmatch (promedio)</div>
-              <div class="v" id="kpiKD">—</div>
-              <div class="s">Mayor = mejor</div>
+              <div class="t">Hard (avg/rep)</div>
+              <div class="v" id="kpiHardAvgRep">—</div>
+              <div class="s">Promedio por rep</div>
             </div>
             <div class="kpi">
-              <div class="t">Kills DM (promedio)</div>
-              <div class="v" id="kpiKills">—</div>
-              <div class="s">Kills del día</div>
+              <div class="t">DM K/D (avg)</div>
+              <div class="v" id="kpiDmKD">—</div>
+              <div class="s">K/D total (prom)</div>
             </div>
             <div class="kpi">
               <div class="t">Registros</div>
@@ -295,11 +329,9 @@
               <tr>
                 <th>Fecha</th>
                 <th>Día</th>
-                <th>Bots avg/best</th>
-                <th>Hard bots (15)</th>
-                <th>DM K</th>
-                <th>DM D</th>
-                <th>K/D</th>
+                <th>100 bots avg/best</th>
+                <th>Hard total (avg/rep)</th>
+                <th>DM totals (K/D)</th>
                 <th>Score</th>
                 <th>Notas</th>
                 <th></th>
@@ -313,7 +345,7 @@
   </div>
 
 <script>
-  const KEY = "valorant_routine_tracker_v4";
+  const KEY = "valorant_routine_tracker_v5_nats";
 
   const el = (id) => document.getElementById(id);
 
@@ -327,51 +359,96 @@
   function save(items){
     localStorage.setItem(KEY, JSON.stringify(items));
   }
-
   function safeNum(v){
     const n = Number(v);
     return Number.isFinite(n) ? n : 0;
   }
-
-  function kd(k, d){
-    if (d === 0) return k === 0 ? 0 : k;
-    return k / d;
-  }
-
-  function mean(arr){
-    if (!arr.length) return 0;
-    return arr.reduce((a,b)=>a+b,0) / arr.length;
-  }
-
   function fmt(n, d=2){
     const p = Math.pow(10,d);
     return (Math.round(n*p)/p).toFixed(d);
   }
-
+  function mean(arr){
+    if (!arr.length) return 0;
+    return arr.reduce((a,b)=>a+b,0) / arr.length;
+  }
+  function kd(k, d){
+    if (d === 0) return k === 0 ? 0 : k;
+    return k / d;
+  }
   function dowName(dateStr){
     const d = new Date(dateStr + "T00:00:00");
     return DOW_SHORT[d.getDay()];
   }
 
-  function avgBotTime(item){
+  // ---- 100 bots (5 tiempos)
+  function botTimesVals(item){
     const arr = Array.isArray(item.botTimes) ? item.botTimes : [];
-    const vals = arr.map(n => Number(n)).filter(n => Number.isFinite(n) && n > 0);
-    if (!vals.length) return 0;
-    return mean(vals);
+    return arr.map(n=>Number(n)).filter(n => Number.isFinite(n) && n > 0);
   }
-  function bestBotTime(item){
-    const arr = Array.isArray(item.botTimes) ? item.botTimes : [];
-    const vals = arr.map(n => Number(n)).filter(n => Number.isFinite(n) && n > 0);
-    if (!vals.length) return 0;
-    return Math.min(...vals);
+  function botAvg(item){
+    const vals = botTimesVals(item);
+    return vals.length ? mean(vals) : 0;
+  }
+  function botBest(item){
+    const vals = botTimesVals(item);
+    return vals.length ? Math.min(...vals) : 0;
   }
 
-  // Score compuesto: hardBots alto + KD alto + botsAvg bajo
+  // ---- Hard (15 reps)
+  function hardVals(item){
+    const arr = Array.isArray(item.hardReps) ? item.hardReps : [];
+    return arr.map(n=>Number(n)).filter(n => Number.isFinite(n) && n >= 0);
+  }
+  function hardTotal(item){
+    const vals = hardVals(item);
+    return vals.reduce((a,b)=>a+b,0);
+  }
+  function hardAvgRep(item){
+    const vals = hardVals(item);
+    if (!vals.length) return 0;
+    return hardTotal(item) / vals.length;
+  }
+  function hardBestRep(item){
+    const vals = hardVals(item);
+    return vals.length ? Math.max(...vals) : 0;
+  }
+
+  // ---- Deathmatch (5 DMs)
+  function dmPairs(item){
+    const arr = Array.isArray(item.dms) ? item.dms : [];
+    // cada entry: {k,d}
+    return arr.map(x => ({ k: Number(x?.k)||0, d: Number(x?.d)||0 }));
+  }
+  function dmTotals(item){
+    const pairs = dmPairs(item);
+    const k = pairs.reduce((a,x)=>a+x.k,0);
+    const d = pairs.reduce((a,x)=>a+x.d,0);
+    return { k, d };
+  }
+  function dmKDTotal(item){
+    const t = dmTotals(item);
+    return kd(t.k, t.d);
+  }
+  function dmAvgKills(item){
+    const pairs = dmPairs(item);
+    if (!pairs.length) return 0;
+    return mean(pairs.map(x=>x.k));
+  }
+  function dmAvgDeaths(item){
+    const pairs = dmPairs(item);
+    if (!pairs.length) return 0;
+    return mean(pairs.map(x=>x.d));
+  }
+  function dmBestKD(item){
+    const pairs = dmPairs(item);
+    if (!pairs.length) return 0;
+    const kds = pairs.map(x=>kd(x.k,x.d));
+    return Math.max(...kds);
+  }
+
+  // Score compuesto para mejor/peor día
   function perfScore(item){
-    const botAvg = avgBotTime(item);
-    const hardBots = item.hardBots || 0;
-    const kdr = kd(item.dmKills||0, item.dmDeaths||0);
-    return (hardBots) + (kdr * 10) - (botAvg / 10);
+    return (hardTotal(item)) + (dmKDTotal(item) * 10) - (botAvg(item) / 10);
   }
 
   // ISO week key (lunes inicio)
@@ -386,27 +463,23 @@
     const year = d.getFullYear();
     return `${year}-W${String(weekNumber).padStart(2,'0')}`;
   }
-
   function monthKey(dateStr){
     const d = new Date(dateStr + "T00:00:00");
     const y = d.getFullYear();
     const m = String(d.getMonth()+1).padStart(2,'0');
     return `${y}-${m}`;
   }
-
   function periodKeyByMode(mode, dateStr){
     if (mode === "week") return isoWeekKey(dateStr);
     if (mode === "month") return monthKey(dateStr);
     return "all";
   }
-
   function uniquePeriods(mode){
     const items = load().filter(x => x.date);
     if (mode === "all") return ["all"];
     const set = new Set(items.map(x => periodKeyByMode(mode, x.date)));
     return Array.from(set).sort((a,b)=> b.localeCompare(a));
   }
-
   function renderPeriodSelect(){
     const mode = el("viewMode").value;
     const periods = uniquePeriods(mode);
@@ -441,10 +514,9 @@
     const has = new Set();
     for (const it of items){
       const d = new Date(it.date + "T00:00:00");
-      const dowMonFirst = (d.getDay() + 6) % 7; // Mon=0..Sun=6
+      const dowMonFirst = (d.getDay() + 6) % 7;
       has.add(dowMonFirst);
     }
-
     for (let i=0;i<7;i++){
       const div = document.createElement("div");
       div.className = "dayBox " + (has.has(i) ? "done" : "miss");
@@ -466,20 +538,19 @@
     const last = allItems.length ? allItems[allItems.length-1].date : "—";
     el("kpiLast").textContent = `Último: ${last}`;
 
-    // KPIs
-    const botAvgs = items.map(x => avgBotTime(x)).filter(x => x > 0);
-    const botBests = items.map(x => bestBotTime(x)).filter(x => x > 0);
+    // KPIs promedio por período
+    const botAvgs = items.map(x => botAvg(x)).filter(x => x > 0);
+    const botBests = items.map(x => botBest(x)).filter(x => x > 0);
 
-    const hardBots = items.map(x => x.hardBots || 0);
-    const dmKills = items.map(x => x.dmKills || 0);
-    const dmDeaths = items.map(x => x.dmDeaths || 0);
-    const kds = items.map(x => kd(x.dmKills||0, x.dmDeaths||0));
-
+    const hardTotals = items.map(x => hardTotal(x));
+    const hardAvgReps = items.map(x => hardAvgRep(x));
+    const dmKDs = items.map(x => dmKDTotal(x));
+    
     el("kpiBotAvg").textContent = botAvgs.length ? `${fmt(mean(botAvgs),1)}s` : "—";
     el("kpiBotBest").textContent = botBests.length ? `${fmt(Math.min(...botBests),1)}s` : "—";
-    el("kpiHardBots").textContent = items.length ? fmt(mean(hardBots),0) : "—";
-    el("kpiKD").textContent = items.length ? fmt(mean(kds),2) : "—";
-    el("kpiKills").textContent = items.length ? fmt(mean(dmKills),0) : "—";
+    el("kpiHardTotal").textContent = items.length ? fmt(mean(hardTotals),0) : "—";
+    el("kpiHardAvgRep").textContent = items.length ? fmt(mean(hardAvgReps),1) : "—";
+    el("kpiDmKD").textContent = items.length ? fmt(mean(dmKDs),2) : "—";
 
     const bw = bestWorst(items);
     el("bestDay").textContent = bw.best ? `${bw.best.date} (${dowName(bw.best.date)})` : "—";
@@ -492,20 +563,21 @@
     const tbody = el("tbody");
     tbody.innerHTML = "";
     for (const x of items.slice().sort((a,b)=> (b.date||"").localeCompare(a.date||""))){
-      const kdr = kd(x.dmKills||0, x.dmDeaths||0);
+      const bAvg = botAvg(x);
+      const bBest = botBest(x);
+      const hTot = hardTotal(x);
+      const hAvg = hardAvgRep(x);
+      const dmt = dmTotals(x);
+      const dmkd = dmKDTotal(x);
       const score = perfScore(x);
-      const avgT = avgBotTime(x);
-      const bestT = bestBotTime(x);
 
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${x.date || ""}</td>
         <td>${x.date ? dowName(x.date) : ""}</td>
-        <td>${avgT ? (fmt(avgT,1) + "s / " + fmt(bestT,1) + "s") : "—"}</td>
-        <td>${fmt(x.hardBots||0,0)}</td>
-        <td>${fmt(x.dmKills||0,0)}</td>
-        <td>${fmt(x.dmDeaths||0,0)}</td>
-        <td>${fmt(kdr,2)}</td>
+        <td>${bAvg ? (fmt(bAvg,1) + "s / " + fmt(bBest,1) + "s") : "—"}</td>
+        <td>${fmt(hTot,0)} (${fmt(hAvg,1)})</td>
+        <td>${fmt(dmt.k,0)}-${fmt(dmt.d,0)} (${fmt(dmkd,2)})</td>
         <td>${fmt(score,1)}</td>
         <td>${(x.notes||"").replaceAll("<","&lt;").replaceAll(">","&gt;")}</td>
         <td><button data-id="${x.id}">Eliminar</button></td>
@@ -523,6 +595,7 @@
   function addItem(){
     const date = el("date").value || new Date().toISOString().slice(0,10);
 
+    // bots
     const botTimes = [
       Math.max(0, safeNum(el("botT1").value)),
       Math.max(0, safeNum(el("botT2").value)),
@@ -531,26 +604,32 @@
       Math.max(0, safeNum(el("botT5").value)),
     ];
 
-    const hardBots = Math.max(0, Math.floor(safeNum(el("hardBots").value)));
-    const dmKills = Math.max(0, Math.floor(safeNum(el("dmKills").value)));
-    const dmDeaths = Math.max(0, Math.floor(safeNum(el("dmDeaths").value)));
+    // hard 15 reps
+    const hardReps = [];
+    for (let i=1;i<=15;i++){
+      hardReps.push(Math.max(0, Math.floor(safeNum(el("h"+i).value))));
+    }
+
+    // deathmatch 5
+    const dms = [];
+    for (let i=1;i<=5;i++){
+      const k = Math.max(0, Math.floor(safeNum(el(`dm${i}k`).value)));
+      const d = Math.max(0, Math.floor(safeNum(el(`dm${i}d`).value)));
+      dms.push({k,d});
+    }
+
     const notes = (el("notes").value || "").trim();
 
-    const item = { id: crypto.randomUUID(), date, botTimes, hardBots, dmKills, dmDeaths, notes };
+    const item = { id: crypto.randomUUID(), date, botTimes, hardReps, dms, notes };
 
     const items = load();
     items.push(item);
     save(items);
 
     // limpiar inputs (conservar fecha)
-    el("botT1").value = "";
-    el("botT2").value = "";
-    el("botT3").value = "";
-    el("botT4").value = "";
-    el("botT5").value = "";
-    el("hardBots").value = "";
-    el("dmKills").value = "";
-    el("dmDeaths").value = "";
+    for (let i=1;i<=5;i++){ el("botT"+i).value = ""; }
+    for (let i=1;i<=15;i++){ el("h"+i).value = ""; }
+    for (let i=1;i<=5;i++){ el(`dm${i}k`).value = ""; el(`dm${i}d`).value = ""; }
     el("notes").value = "";
 
     renderPeriodSelect();
@@ -567,28 +646,44 @@
 
   function exportCSV(){
     const items = load();
-    const header = ["date","dow","botT1","botT2","botT3","botT4","botT5","botAvg","botBest","hardBots15reps","dmKillsTotal5","dmDeathsTotal5","dmKD","score","notes"];
+    const header = [
+      "date","dow",
+      "botT1","botT2","botT3","botT4","botT5","botAvg","botBest",
+      "hardR1","hardR2","hardR3","hardR4","hardR5","hardR6","hardR7","hardR8","hardR9","hardR10","hardR11","hardR12","hardR13","hardR14","hardR15",
+      "hardTotal","hardAvgRep","hardBestRep",
+      "dm1k","dm1d","dm2k","dm2d","dm3k","dm3d","dm4k","dm4d","dm5k","dm5d",
+      "dmKillsTotal","dmDeathsTotal","dmKDTotal","dmBestKD",
+      "score","notes"
+    ];
 
     const rows = items.map(x => {
       const bt = Array.isArray(x.botTimes) ? x.botTimes : [0,0,0,0,0];
-      const kdr = kd(x.dmKills||0, x.dmDeaths||0);
-      const s = perfScore(x);
-      const botAvg = avgBotTime(x);
-      const botBest = bestBotTime(x);
+      const hr = Array.isArray(x.hardReps) ? x.hardReps : Array(15).fill(0);
+      const dms = Array.isArray(x.dms) ? x.dms : Array(5).fill({k:0,d:0});
 
-      return [
+      const bAvg = botAvg(x), bBest = botBest(x);
+      const hTot = hardTotal(x), hAvg = hardAvgRep(x), hBest = hardBestRep(x);
+      const dmt = dmTotals(x), dmkd = dmKDTotal(x), dmBest = dmBestKD(x);
+      const score = perfScore(x);
+
+      const flat = [
         x.date,
         x.date ? dowName(x.date) : "",
         bt[0]||0, bt[1]||0, bt[2]||0, bt[3]||0, bt[4]||0,
-        botAvg.toFixed(2),
-        botBest.toFixed(2),
-        x.hardBots || 0,
-        x.dmKills || 0,
-        x.dmDeaths || 0,
-        kdr.toFixed(4),
-        s.toFixed(2),
+        bAvg.toFixed(2), bBest.toFixed(2),
+        ...hr,
+        hTot, hAvg.toFixed(2), hBest,
+        (dms[0]?.k||0),(dms[0]?.d||0),
+        (dms[1]?.k||0),(dms[1]?.d||0),
+        (dms[2]?.k||0),(dms[2]?.d||0),
+        (dms[3]?.k||0),(dms[3]?.d||0),
+        (dms[4]?.k||0),(dms[4]?.d||0),
+        dmt.k, dmt.d, dmkd.toFixed(4), dmBest.toFixed(4),
+        score.toFixed(2),
         (x.notes ?? "").replaceAll('"','""')
       ];
+
+      return flat;
     });
 
     const csv = [header, ...rows]
@@ -599,7 +694,7 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "valorant_routine_tracker.csv";
+    a.download = "valorant_routine_tracker_nats.csv";
     a.click();
     URL.revokeObjectURL(url);
   }
